@@ -8,6 +8,8 @@
 
 #      Developer from Canada and .lua coding
 
+# Script Loadstring Here ⬇️
+
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/refs/heads/main/.luau"))()
 ```
