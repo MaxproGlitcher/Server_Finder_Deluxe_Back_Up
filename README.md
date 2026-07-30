@@ -1,6 +1,7 @@
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=360&size=18&duration=4600&pause=1000&color=120101&background=B2263400&width=435&lines=Welcome+to+Server+Finder+Deluxe+Back+Up;The+Best+Server+Search+Tracker...;Open+Source+and+with+improved+speed)](https://git.io/typing-svg)
 
-https://img.shields.io/endpoint?url=https%3A%2F%2Fdynamic-badge-formatter-ynrxn78r2oye.runkit.sh%2Fjson%3Furl%3Dhttps%253A%252F%252Fgithub.com%252FMaxproGlitcher%252FServer_Finder_Deluxe_Back_Up%26query%3Dhttps%253A%252F%252Fgithub.com%252FMaxproGlitcher%252FServer_Finder_Deluxe_Back_Up%252Fblob%252Fmain%252F.luau%26formatter%3Dmetric%26label%3DDiscord%26labelColor%3DGrey%26color%3DBlack%26logo%3DServer%2520Finder%2520Deluxe%2520Back%2520Up%26logoColor%3DGrey%26logoWidth%3D18%26style%3Dflat%26cacheSeconds%3D300%26prefix%3D**%26suffix%3D*
+[![badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fdynamic-badge-formatter-ynrxn78r2oye.runkit.sh%2Fjson%3Furl%3Dhttps%253A%252F%252Fgithub.com%252FMaxproGlitcher%252FServer_Finder_Deluxe_Back_Up%26query%3Dhttps%253A%252F%252Fgithub.com%252FMaxproGlitcher%252FServer_Finder_Deluxe_Back_Up%252Fblob%252Fmain%252F.luau%26formatter%3Dmetric%26label%3DDiscord%26labelColor%3DGrey%26color%3DBlack%26logo%3DServer%2520Finder%2520Deluxe%2520Back%2520Up%26logoColor%3DGrey%26logoWidth%3D18%26style%3Dflat%26cacheSeconds%3D300%26prefix%3D**%26suffix%3D*)](https://github.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up)
+
 
 #      Server_Finder_Deluxe_Back_Up💻📱
 
