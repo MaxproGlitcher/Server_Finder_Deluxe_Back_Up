@@ -6,7 +6,7 @@
 
 #      Hello Guys 👋🏻, Welcome too Server-Finder Deluxe
 
-#      Developer from Canada 🇨🇦 and .lua coding
+#      Developer from 🍁Canada🍁 and .lua coding
 
 # Script Loadstring Here ⬇️
 
