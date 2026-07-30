@@ -1,6 +1,6 @@
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=360&size=18&duration=4600&pause=1000&color=120101&background=B2263400&width=435&lines=Welcome+to+Server+Finder+Deluxe+Back+Up;The+Best+Server+Search+Tracker...;Open+Source+and+with+improved+speed)](https://git.io/typing-svg)
 
-![visitors](https://visitor-badge.laobi.icu/badge?page_id=Server_Finder_Deluxe_Back_Up&left_color=%233c3939&right_color=%23eb5e00&height=40)
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=Server_Finder_Deluxe_Back_Up&left_color=%232b2727&right_color=%23e76a04&height=30)
 
 #      Server_Finder_Deluxe_Back_Up💻📱
 
