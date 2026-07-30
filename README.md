@@ -9,6 +9,9 @@
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/refs/heads/main/.luau"))()
 ```
+
+![image atl](https://github.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/blob/676d5062ebf9564a4755b93feda3f871e4e58062/Server%20Finder%20Deluxe%20Logo.png)
+
 ![image atl](https://github.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/blob/371af49781e77c66890e840f395cd8eeedc5818a/Logo%20m%C3%A9tallique%20de%20Server%20Finder%20Deluxe.png)
 
 
