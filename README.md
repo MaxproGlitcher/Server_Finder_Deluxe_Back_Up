@@ -40,7 +40,7 @@ Always verify that you are using the official GitHub repository before downloadi
 
 Thank you to everyone who supported the original **Server Finder Deluxe**. This new version continues the project with a safer and more secure future.
 
-#**Created and maintained by MaxproGlitcher**
+
 
 Official Repository:
 https://github.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up
@@ -62,7 +62,7 @@ Server Finder Deluxe Back Up does **not require 100UNC** to run.
 
 # Privacy Commitment
 
-1**Server Finder Deluxe Back Up does not collect any personal information.**
+#1**Server Finder Deluxe Back Up does not collect any personal information.**
 
 #The project does not request, store, or access:
 
