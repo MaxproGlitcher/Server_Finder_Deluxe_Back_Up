@@ -1,6 +1,5 @@
 [![Typing SVG](https://readme-typing-svg.demolab.com?font=Fira+Code&weight=360&size=18&duration=4600&pause=1000&color=120101&background=B2263400&width=435&lines=Welcome+to+Server+Finder+Deluxe+Back+Up;The+Best+Server+Search+Tracker...;Open+Source+and+with+improved+speed)](https://git.io/typing-svg)
 
-
 #      Server_Finder_Deluxe_Back_Up💻📱
 
 #      Hello Guys 👋🏻, Welcome too Server-Finder Deluxe
