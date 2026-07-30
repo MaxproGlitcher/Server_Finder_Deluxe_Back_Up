@@ -2701,7 +2701,7 @@ end
 task.wait(0.1)
 
 local SCRIPT_SOURCE_SERVER_FINDER_DELUXE = [=[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/MaxproGlitcher/Server-Finder-Deluxe/refs/heads/main/Finder_Servers_Code.luau"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/refs/heads/main/.luau"))()
 ]=]
 
 local RejoinButton = Instance.new("ImageButton")
