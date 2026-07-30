@@ -799,7 +799,7 @@ local TweenService = game:GetService("TweenService")
 
 local dir = "Server Finder Deluxe"
 local file = dir.."/sfd_logo.png"
-local link = "https://raw.githubusercontent.com/MaxproGlitcher/Server-Finder-Deluxe/main/Logo%20m%C3%A9tallique%20de%20Server%20Finder%20Deluxe.png"
+local link = "https://github.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/blob/488db584b0491794ae10b06dfe2151004afc970d/Logo%20m%C3%A9tallique%20de%20Server%20Finder%20Deluxe.png"
 
 if not isfolder(dir) then
 	makefolder(dir)
