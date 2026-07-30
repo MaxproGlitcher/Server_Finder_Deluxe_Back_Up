@@ -1,5 +1,7 @@
 #      Server_Finder_Deluxe_Back_Up💻📱
 
+https://readme-typing-svg.demolab.com/demo/?weight=360&size=18&duration=4600&color=120101&background=B2263400&lines=Welcome+to+Server+Finder+Deluxe+Back+Up;The+Best+Server+Search+Tracker...;Open+Source+and+with+improved+speed
+
 #      Hello Guys 👋🏻, Welcome too Server-Finder Deluxe
 
 #      Developer from Canada and .lua coding
