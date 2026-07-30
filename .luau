@@ -2,9 +2,9 @@
 
 -- This is the real Back Up One from Server Finder Deluxe
 
--- Site Web official: https://github.com/MaxproGlitcher/Server-Finder-Deluxe
+-- Site Web official: https://github.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up
 
--- Server Finder Deluxe is original Script software created and developed by MaxproGlitcher.
+--  Server Finder Deluxe is original Script software created and developed by MaxproGlitcher.
 
 -- Copying, modifying, redistributing, reselling, republishing, or any other use of all or part of this project without prior written  
 
