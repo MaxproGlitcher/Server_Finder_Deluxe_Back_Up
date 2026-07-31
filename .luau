@@ -273,7 +273,7 @@ local function cycle(colors)
                 credit.TextColor3 = c
                 percent.TextColor3 = c
                 bar.BackgroundColor3 = c
-                infoLabel.TextColor3 = c -- Fait aussi changer le texte explicatif de couleur selon l'événement !
+                infoLabel.TextColor3 = c 
 
                 if CopyGithubSFD then
                     CopyGithubSFD.TextColor3 = c
