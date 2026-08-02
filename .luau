@@ -139,7 +139,7 @@ CopyGithubSFD.TextSize = 14
 CopyGithubSFD.TextColor3 = Color3.fromRGB(220, 220, 220)
 Instance.new("UICorner", CopyGithubSFD).CornerRadius = UDim.new(0, 6)
 
-local githubLink = "https://github.com/MaxproGlitcher/Server-Finder-Deluxe"
+local githubLink = "https://github.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/tree/main"
 
 CopyGithubSFD.MouseButton1Click:Connect(function()
     pcall(function()
