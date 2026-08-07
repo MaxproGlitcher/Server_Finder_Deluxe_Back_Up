@@ -2,7 +2,7 @@
 
 -- This is the real Back Up One from Server Finder Deluxe
 
--- Site Web official: https://github.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up
+-- Site Web official: https://github.com/MaxproGlitcher/Server-Finder-Deluxe
 
 -- Server Finder Deluxe is original Script software created and developed by MaxproGlitcher.
 
@@ -1547,7 +1547,7 @@ local versionLabel = Instance.new("TextLabel", mainFrame)
 versionLabel.Size = UDim2.new(0, 150, 0, 25)
 versionLabel.Position = UDim2.new(0, 10, 0, 8)
 versionLabel.BackgroundTransparency = 1
-versionLabel.Text = "v7.3"
+versionLabel.Text = "v7.4"
 versionLabel.Font = Enum.Font.Ubuntu
 versionLabel.TextSize = 16
 versionLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -1747,6 +1747,13 @@ end)
 -- ════════════════════════════════════════════
 -- (Le code qui scann tout les servers publics)
 -- ════════════════════════════════════════════
+
+pcall(function()
+    local env = getfenv and getfenv(0)
+    if type(env) == "table" and table.freeze and not table.isfrozen(env) then
+        pcall(table.freeze, env)
+    end
+end)
 
 local posChange = 8
 local serverFrames = {}
@@ -2701,7 +2708,7 @@ end
 task.wait(0.1)
 
 local SCRIPT_SOURCE_SERVER_FINDER_DELUXE = [=[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/refs/heads/main/.luau"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/refs/heads/main/.luau"))())
 ]=]
 
 local RejoinButton = Instance.new("ImageButton")
@@ -2981,7 +2988,7 @@ Modules.print = function(color, text, size)
 	print(Text)
 end
 
-local version = "7.3"
+local version = "7.4"
 
 local translations = {
 	["fr"] = {
