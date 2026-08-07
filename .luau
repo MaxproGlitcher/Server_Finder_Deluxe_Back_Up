@@ -2,7 +2,7 @@
 
 -- This is the real Back Up One from Server Finder Deluxe
 
--- Site Web official: https://github.com/MaxproGlitcher/Server-Finder-Deluxe
+-- Site Web official: https://github.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up
 
 -- Server Finder Deluxe is original Script software created and developed by MaxproGlitcher.
 
@@ -2708,7 +2708,7 @@ end
 task.wait(0.1)
 
 local SCRIPT_SOURCE_SERVER_FINDER_DELUXE = [=[
-loadstring(game:HttpGet("https://raw.githubusercontent.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/refs/heads/main/.luau"))())
+loadstring(game:HttpGet("https://raw.githubusercontent.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/refs/heads/main/.luau"))()
 ]=]
 
 local RejoinButton = Instance.new("ImageButton")
