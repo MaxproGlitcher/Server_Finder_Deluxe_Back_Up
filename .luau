@@ -748,7 +748,7 @@ mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
 mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
 mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
 mainFrame.BorderSizePixel = 0
-mainFrame.ZIndex = 5 -- On donne une base solide
+mainFrame.ZIndex = 5 
 
 local corner = Instance.new("UICorner")
 corner.Parent = mainFrame
@@ -1622,7 +1622,7 @@ if isXmas then
 	end)
 end
 
--- Effet Halloween
+
 if isHalloween then
 	decorateTitle("🎃", "🎃")
 	local cycleColors = {
@@ -1758,7 +1758,6 @@ end)
 local posChange = 8
 local serverFrames = {}
 
--- Le code qui scann tout les servers publics
 
 local function GetAllServers(PlaceID)
 	getgenv().NextServer = nil
@@ -1830,7 +1829,7 @@ local function CreateServerFrame(server)
 
 	server.timeObtained = server.timeObtained or formatTime()
 
-	-- TextLabel pour le nombre de joueurs, ping et FPS
+	
 	local infoLabel = Instance.new("TextLabel", serverFrame)
 	infoLabel.Size = UDim2.new(0, 300, 0, 60)
 	infoLabel.Position = UDim2.new(0, 10, 0, 10)
@@ -1848,7 +1847,7 @@ local function CreateServerFrame(server)
 	local maxPlayers = server.maxPlayers or 0
 	local fps = ping > 0 and math.floor(1000 / ping) or 0
 
-	-- Estimation qualité serveur
+	
 	local quality, qualityColor
 	pcall(function()
 		quality = "Good"
@@ -1872,7 +1871,7 @@ local function CreateServerFrame(server)
 
 	infoLabel.TextColor3 = qualityColor
 
-	-- ID du jeu
+	
 	local placeIdLabel = Instance.new("TextLabel", serverFrame)
 	placeIdLabel.Size = UDim2.new(0, 300, 0, 20)
 	placeIdLabel.Position = UDim2.new(0, 10, 0, 76)
@@ -1886,7 +1885,7 @@ local function CreateServerFrame(server)
 	placeIdLabel.Text = "Game ID : " .. tostring(game.PlaceId)
 	placeIdLabel.ZIndex = 12
 
-	-- ID du serveur public
+	
 	local idLabel = Instance.new("TextLabel", serverFrame)
 	idLabel.Size = UDim2.new(0, 300, 0, 20)
 	idLabel.Position = UDim2.new(0, 10, 0, 94)
@@ -1900,7 +1899,7 @@ local function CreateServerFrame(server)
 	idLabel.Text = "ID : " .. server.id
 	idLabel.ZIndex = 12
 
-	-- Bouton Join
+	
 	local joinButton = Instance.new("TextButton", serverFrame)
 	joinButton.Size = UDim2.new(0, 100, 0, 40)
 	joinButton.Position = UDim2.new(1, -110, 0.5, -20)
@@ -1934,19 +1933,19 @@ local function CreateServerFrame(server)
 
        server.timeObtained = server.timeObtained or formatTime()
     
-        -- Heure des Servers Roblox 
-        local timeLabel = Instance.new("TextLabel", serverFrame)
-        timeLabel.Size = UDim2.new(0, 100, 0, 20)
-        timeLabel.Position = UDim2.new(1, -110, 0.5, -50) -- 👈 au-dessus du Join
-        timeLabel.BackgroundTransparency = 1
-        timeLabel.TextXAlignment = Enum.TextXAlignment.Center
-        timeLabel.Font = Enum.Font.Ubuntu
-        timeLabel.TextSize = 14
-        timeLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
-        timeLabel.ZIndex = 12
+        
+    local timeLabel = Instance.new("TextLabel", serverFrame)
+    timeLabel.Size = UDim2.new(0, 100, 0, 20)
+    timeLabel.Position = UDim2.new(1, -110, 0.5, -50) 
+    timeLabel.BackgroundTransparency = 1
+    timeLabel.TextXAlignment = Enum.TextXAlignment.Center
+    timeLabel.Font = Enum.Font.Ubuntu
+    timeLabel.TextSize = 14
+    timeLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+    timeLabel.ZIndex = 12
 	timeLabel.Text = server.timeObtained
 
-        -- Copie JoinButton
+        
 	local copyJoinButton = Instance.new("TextButton", serverFrame)
 	copyJoinButton.Size = UDim2.new(0, 100, 0, 30)
 	copyJoinButton.Position = UDim2.new(1, -110, 0.5, 25)
@@ -2771,7 +2770,7 @@ resizeButton.Image = "http://www.roblox.com/asset/?id=92176830367195"
 resizeButton.BackgroundTransparency = 1
 resizeButton.ZIndex = 12
 
-local isSmall = true -- Définir la taille initiale comme petite
+local isSmall = true 
 
 local clickSoundResize = Instance.new("Sound", resizeButton)
 clickSoundResize.SoundId = "rbxassetid://9120093264"
@@ -2897,7 +2896,7 @@ resizeButton.MouseButton1Click:Connect(toggleGuiSize)
 local Players = game:GetService("Players")
 local Lighting = game:GetService("Lighting")
 
--- Sauvegarde des réglages d'origine
+
 local UserSettings = settings():GetService("RenderSettings")
 local originalSettings = {
 	QualityLevel = UserSettings.QualityLevel,
@@ -2905,23 +2904,23 @@ local originalSettings = {
 	GlobalShadows = Lighting.GlobalShadows
 }
 
--- Active le mode performance boost
+
 local function EnablePerformanceBoost()
 	UserSettings.QualityLevel = Enum.QualityLevel.Level01
 	UserSettings.EditQualityLevel = Enum.QualityLevel.Level01
 
-	-- Désactive tous les effets visuels post-traitement
+	
 	for _, effect in pairs(Lighting:GetChildren()) do
 		if effect:IsA("PostEffect") then
 			effect.Enabled = false
 		end
 	end
 
-	-- Désactive les ombres globales
+	
 	Lighting.GlobalShadows = false
 end
 
--- Restaure les réglages normaux
+
 local function DisablePerformanceBoost()
 	UserSettings.QualityLevel = originalSettings.QualityLevel
 	UserSettings.EditQualityLevel = originalSettings.EditQualityLevel
@@ -2935,10 +2934,10 @@ local function DisablePerformanceBoost()
 	Lighting.GlobalShadows = originalSettings.GlobalShadows
 end
 
--- Exemple : activer au lancement
+
 EnablePerformanceBoost()
 
--- Exemple : désactiver quand tu fermes le GUI
+
 closeBtn.MouseButton1Click:Connect(function()
 	DisablePerformanceBoost()
 	screenGui.Enabled = false
@@ -3048,7 +3047,7 @@ local translations = {
 	}
 }
 
--- Utilisation correcte de RobloxLocaleId côté client
+
 local langCode = game:GetService("LocalizationService").RobloxLocaleId:lower():match("^([a-z][a-z])") or "en"
 local msg = translations[langCode] or translations["en"]
 
