@@ -447,6 +447,26 @@ local function v8(v6)
     return v7
 end
 
+local function HttpGet(url)
+    local ok, status, body = pcall(function()
+        if request then
+            local res = request({Url = url, Method = "GET"})
+            return res.StatusCode, res.Body
+        elseif http_request then
+            local res = http_request({Url = url, Method = "GET"})
+            return res.StatusCode, res.Body
+        elseif syn and syn.request then
+            local res = syn.request({Url = url, Method = "GET"})
+            return res.StatusCode, res.Body
+        end
+        return 200, game:HttpGet(url)
+    end)
+    if ok then
+        return status, body
+    end
+    return nil, nil
+end
+
 -- ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 -- (Service File / Détection combatibilité des appareilles disponible pour exercution du script / Caméra / Service Téléport) 
 -- ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
@@ -3060,3 +3080,4 @@ Modules.print("Grey", msg.contact, 20)
 Modules.print("Grey", msg.line, 20)
 end)
 --------------------------------------------------------------------------------------------------------------------
+
