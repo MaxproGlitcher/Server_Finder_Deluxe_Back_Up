@@ -1567,7 +1567,7 @@ local versionLabel = Instance.new("TextLabel", mainFrame)
 versionLabel.Size = UDim2.new(0, 150, 0, 25)
 versionLabel.Position = UDim2.new(0, 10, 0, 8)
 versionLabel.BackgroundTransparency = 1
-versionLabel.Text = "v7.4"
+versionLabel.Text = "v7.5"
 versionLabel.Font = Enum.Font.Ubuntu
 versionLabel.TextSize = 16
 versionLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -1865,7 +1865,7 @@ local function CreateServerFrame(server)
 	local ping = server.ping or 0
 	local players = server.playing or 0
 	local maxPlayers = server.maxPlayers or 0
-	local fps = ping > 0 and math.floor(1000 / ping) or 0
+	local fps = server.fps or 0
 
 	
 	local quality, qualityColor
@@ -2074,22 +2074,39 @@ end
 
 
 function refreshServers()
-	local ok, servers = pcall(GetAllServers, game.PlaceId)
+    local ok, servers = pcall(GetAllServers, game.PlaceId)
 
-	if typeof(servers) == "table" and #servers > 0 then
-		local allServersFlat = {}
-		for _, batch in ipairs(servers) do
-			for _, s in ipairs(batch) do
-				table.insert(allServersFlat, s)
-			end
-		end
-		allServers = allServersFlat
-		updateServerList(allServers)
-	else
-		warn("No server found or API error.")
-		showErrorTween()
-	end
+    if typeof(servers) == "table" and #servers > 0 then
+        local allServersFlat = {}
+
+        local success, err = pcall(function()
+            for _, batch in ipairs(servers) do
+                for _, s in ipairs(batch) do
+                    table.insert(allServersFlat, {
+                        id = s.id,
+                        playing = s.playing,
+                        maxPlayers = s.maxPlayers,
+                        ping = s.ping,
+                        fps = s.fps,
+                        timeObtained = formatTime()
+                    })
+                end
+            end
+        end)
+
+        if not success then
+            warn("Flatten error:", err)
+            return
+        end
+
+        allServers = allServersFlat
+        updateServerList(allServers)
+    else
+        warn("No server found or API error.")
+        showErrorTween()
+    end
 end
+
 
 
 refreshServers()
@@ -3007,7 +3024,7 @@ Modules.print = function(color, text, size)
 	print(Text)
 end
 
-local version = "7.4"
+local version = "7.5"
 
 local translations = {
 	["fr"] = {
@@ -3080,4 +3097,5 @@ Modules.print("Grey", msg.contact, 20)
 Modules.print("Grey", msg.line, 20)
 end)
 --------------------------------------------------------------------------------------------------------------------
+
 
