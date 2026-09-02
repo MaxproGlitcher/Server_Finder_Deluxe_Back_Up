@@ -1567,7 +1567,7 @@ local versionLabel = Instance.new("TextLabel", mainFrame)
 versionLabel.Size = UDim2.new(0, 150, 0, 25)
 versionLabel.Position = UDim2.new(0, 10, 0, 8)
 versionLabel.BackgroundTransparency = 1
-versionLabel.Text = "v7.5"
+versionLabel.Text = "v7.6"
 versionLabel.Font = Enum.Font.Ubuntu
 versionLabel.TextSize = 16
 versionLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -1778,32 +1778,60 @@ end)
 local posChange = 8
 local serverFrames = {}
 
+-- ════════════════════════════════════════
+--   Récupération des Serveurs (API v1)
+-- ════════════════════════════════════════
 
-local function GetAllServers(PlaceID)
-	getgenv().NextServer = nil
-	getgenv().HasScannedAll = false
-	local T = {}
-	xpcall(function()
-		local Site = HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Desc&limit=100'))
-		if Site.nextPageCursor and Site.nextPageCursor ~= "null" then
-			getgenv().NextServer = HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Desc&limit=100&cursor=' .. Site.nextPageCursor))
-			table.insert(T, (getgenv().NextServer).data)
-			while not getgenv().HasScannedAll do
-				task.wait()
-				if (getgenv().NextServer).nextPageCursor and (getgenv().NextServer).nextPageCursor ~= "null" then
-					getgenv().NextServer = HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Desc&limit=100&cursor=' .. (getgenv().NextServer).nextPageCursor))
-					table.insert(T, (getgenv().NextServer).data)
-				else
-					getgenv().HasScannedAll = true
-				end
-			end
-		else
-			table.insert(T, Site.data)
-		end
-	end,function()
+local function GetAllServers(PlaceID, orderBy)
+    getgenv().NextServer = nil
+    getgenv().HasScannedAll = false
+    local T = {}
 
-	end)
-	return T
+    xpcall(function()
+        if orderBy == "BestLatency" then
+            
+            local baseUrl = 'https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?orderBy=BestLatency&limit=100'
+            local Site = HttpService:JSONDecode(game:HttpGet(baseUrl))
+            
+            if Site.nextPageCursor and Site.nextPageCursor ~= "null" then
+                getgenv().NextServer = HttpService:JSONDecode(game:HttpGet(baseUrl .. '&cursor=' .. Site.nextPageCursor))
+                table.insert(T, (getgenv().NextServer).data)
+                while not getgenv().HasScannedAll do
+                    task.wait()
+                    if (getgenv().NextServer).nextPageCursor and (getgenv().NextServer).nextPageCursor ~= "null" then
+                        getgenv().NextServer = HttpService:JSONDecode(game:HttpGet(baseUrl .. '&cursor=' .. (getgenv().NextServer).nextPageCursor))
+                        table.insert(T, (getgenv().NextServer).data)
+                    else
+                        getgenv().HasScannedAll = true
+                    end
+                end
+            else
+                table.insert(T, Site.data)
+            end
+        else
+            
+            local Site = HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Desc&limit=100'))
+            if Site.nextPageCursor and Site.nextPageCursor ~= "null" then
+                getgenv().NextServer = HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Desc&limit=100&cursor=' .. Site.nextPageCursor))
+                table.insert(T, (getgenv().NextServer).data)
+                while not getgenv().HasScannedAll do
+                    task.wait()
+                    if (getgenv().NextServer).nextPageCursor and (getgenv().NextServer).nextPageCursor ~= "null" then
+                        getgenv().NextServer = HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Desc&limit=100&cursor=' .. (getgenv().NextServer).nextPageCursor))
+                        table.insert(T, (getgenv().NextServer).data)
+                    else
+                        getgenv().HasScannedAll = true
+                    end
+                end
+            else
+                table.insert(T, Site.data)
+            end
+        end
+    end, function(err)
+        warn("Erreur GetAllServers :", err)
+    end)
+
+    return T
 end
 --------------------------------------------------------------------------------------------------------------------
 
@@ -1963,7 +1991,7 @@ local function CreateServerFrame(server)
     timeLabel.TextSize = 14
     timeLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
     timeLabel.ZIndex = 12
-	timeLabel.Text = server.timeObtained
+    timeLabel.Text = server.timeObtained
 
         
 	local copyJoinButton = Instance.new("TextButton", serverFrame)
@@ -1998,8 +2026,30 @@ local function CreateServerFrame(server)
 		end
 	end)
 
+
+	local bestLatencyBtn = Instance.new("TextButton", serverFrame)
+    bestLatencyBtn.Size = UDim2.new(0, 100, 0, 30)
+    bestLatencyBtn.Position = UDim2.new(1, -220, 0.5, 25)
+    bestLatencyBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    bestLatencyBtn.Text = "Best Latency"
+    bestLatencyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    bestLatencyBtn.Font = Enum.Font.Ubuntu
+    bestLatencyBtn.TextSize = 14
+    bestLatencyBtn.ZIndex = 12
+
+    bestLatencyBtn.MouseButton1Click:Connect(function()
+    local ok, err = pcall(function()
+        refreshServers("BestLatency")
+    end)
+
+    if not ok then
+        warn("Error while searching for Best Latency:", err)
+    end
+end)
+
 	table.insert(serverFrames, serverFrame)
 end
+
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -3024,7 +3074,7 @@ Modules.print = function(color, text, size)
 	print(Text)
 end
 
-local version = "7.5"
+local version = "7.6"
 
 local translations = {
 	["fr"] = {
@@ -3097,5 +3147,4 @@ Modules.print("Grey", msg.contact, 20)
 Modules.print("Grey", msg.line, 20)
 end)
 --------------------------------------------------------------------------------------------------------------------
-
 
