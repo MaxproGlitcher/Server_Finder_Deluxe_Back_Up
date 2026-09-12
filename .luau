@@ -1768,6 +1768,35 @@ end)
 -- (Le code qui scann tout les servers publics)
 -- ════════════════════════════════════════════
 
+-- ════════════════════════════════════════════
+-- (Récupération des nombres de joueurs (API v1))
+-- ════════════════════════════════════════════
+
+local function GetTotalPlayers(placeId)
+    local total = "N/A"
+    xpcall(function()
+        
+        local placeUrl = "https://apis.roblox.com/universes/v1/places/" .. tostring(placeId) .. "/universe"
+        local placeRes = game:GetService("HttpService"):JSONDecode(game:HttpGet(placeUrl))
+        local universeId = placeRes and placeRes.universeId
+
+        if universeId then
+            
+            local universeUrl = "https://games.roblox.com/v1/games?universeIds=" .. tostring(universeId)
+            local universeRes = game:GetService("HttpService"):JSONDecode(game:HttpGet(universeUrl))
+            if universeRes and universeRes.data and universeRes.data[1] then
+                total = tostring(universeRes.data[1].playing or "N/A")
+            end
+        end
+    end, function(err)
+        warn("Erreur GetTotalPlayers :", err)
+    end)
+    return total
+end
+
+print(GetTotalPlayers(game.PlaceId))
+
+
 pcall(function()
     local env = getfenv and getfenv(0)
     if type(env) == "table" and table.freeze and not table.isfrozen(env) then
@@ -1893,7 +1922,8 @@ local function CreateServerFrame(server)
 	local ping = server.ping or 0
 	local players = server.playing or 0
 	local maxPlayers = server.maxPlayers or 0
-	local fps = server.fps or 0
+	local rawFps = tonumber(server.fps) or 0
+    local fps = string.format("%.1f", rawFps)  
 
 	
 	local quality, qualityColor
@@ -1918,6 +1948,18 @@ local function CreateServerFrame(server)
 		"\nServer Quality : " .. quality
 
 	infoLabel.TextColor3 = qualityColor
+
+	local totalPlayersLabel = Instance.new("TextLabel", serverFrame)
+    totalPlayersLabel.Size = UDim2.new(0, 300, 0, 20)
+    totalPlayersLabel.Position = UDim2.new(0, 10, 0, 58)
+    totalPlayersLabel.BackgroundTransparency = 1
+    totalPlayersLabel.TextWrapped = true
+    totalPlayersLabel.TextXAlignment = Enum.TextXAlignment.Left
+    totalPlayersLabel.Font = Enum.Font.Ubuntu
+    totalPlayersLabel.TextSize = 14
+    totalPlayersLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+    totalPlayersLabel.Text = "Total Servers Players : " .. tostring(cachedTotalPlayers)
+    totalPlayersLabel.ZIndex = 12
 
 	
 	local placeIdLabel = Instance.new("TextLabel", serverFrame)
@@ -2124,6 +2166,20 @@ end
 
 
 function refreshServers()
+
+task.spawn(function()
+    local success, result = pcall(function()
+        return GetTotalPlayers(game.PlaceId)
+    end)
+
+    if success and result then
+        cachedTotalPlayers = result
+    else
+        cachedTotalPlayers = "N/A"
+        warn("Unable to retrieve the total number of players :", result)
+    end
+end)
+
     local ok, servers = pcall(GetAllServers, game.PlaceId)
 
     if typeof(servers) == "table" and #servers > 0 then
@@ -3074,7 +3130,7 @@ Modules.print = function(color, text, size)
 	print(Text)
 end
 
-local version = "7.6"
+local version = "7.7"
 
 local translations = {
 	["fr"] = {
