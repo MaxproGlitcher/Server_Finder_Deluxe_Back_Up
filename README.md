@@ -75,6 +75,7 @@ The system can retrieve and display important information about discovered publi
 * Current player count and maximum player capacity Normal Servers / latency
 * Server ping Normal Servers / latency
 * Shows the actual FPS Normal Servers / latency
+* Also get the result showing the actual number of players in the game / latency
 * Server performance information Normal Servers / latency
 * BestLatency server results 
 
