@@ -64,6 +64,32 @@ Server Finder Deluxe Back Up is designed to support different environments, incl
 The script requires an environment with **HTTP functions** and **getgenv support**.
 Server Finder Deluxe Back Up does **not require 100UNC** to run.
 
+# Server Finder Deluxe Back Up
+
+Server Finder Deluxe Back Up uses advanced server-search engineering designed to efficiently discover and analyze Roblox public servers.
+
+The system can retrieve and display important information about discovered public servers, including:
+
+* Public server IDs
+* Game / Place IDs
+* Current player count and maximum player capacity
+* Server ping / latency
+* Estimated server FPS
+* Server performance information
+* BestLatency server results
+
+The advanced search system is designed to find public servers efficiently and help identify servers with better latency and performance.
+
+# Advanced Server Search
+
+Server Finder Deluxe Back Up includes an advanced server-search system for discovering Roblox public servers.
+
+The system analyzes available public-server information and can prioritize servers based on different performance criteria, including latency, player capacity, and overall server performance.
+
+The **BestLatency** functionality is designed to help users find public servers with lower latency and better connection performance.
+
+Server Finder Deluxe Back Up is focused on providing a fast, transparent, and reliable way to search and analyze public Roblox servers.
+
 # Privacy Commitment
 
 #1**Server Finder Deluxe Back Up does not collect any personal information.**
