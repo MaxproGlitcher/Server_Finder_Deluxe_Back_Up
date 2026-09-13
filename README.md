@@ -70,13 +70,13 @@ Server Finder Deluxe Back Up uses advanced server-search engineering designed to
 
 The system can retrieve and display important information about discovered public servers, including:
 
-* Public server IDs
-* Game / Place IDs
-* Current player count and maximum player capacity
-* Server ping / latency
-* Estimated server FPS
-* Server performance information
-* BestLatency server results
+* Public server IDs Normal Servers / latency
+* Game / Place IDs Normal Servers / latency
+* Current player count and maximum player capacity Normal Servers / latency
+* Server ping Normal Servers / latency
+* Shows the actual FPS Normal Servers / latency
+* Server performance information Normal Servers / latency
+* BestLatency server results 
 
 The advanced search system is designed to find public servers efficiently and help identify servers with better latency and performance.
 
