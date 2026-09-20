@@ -2162,6 +2162,26 @@ local function CreateServerFrame(server)
 	end)
 
 
+	local bestLatencyBtn = Instance.new("TextButton", serverFrame)
+    bestLatencyBtn.Size = UDim2.new(0, 100, 0, 30)
+    bestLatencyBtn.Position = UDim2.new(1, -220, 0.5, 25)
+    bestLatencyBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    bestLatencyBtn.Text = "Best Latency"
+    bestLatencyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    bestLatencyBtn.Font = Enum.Font.Ubuntu
+    bestLatencyBtn.TextSize = 14
+    bestLatencyBtn.ZIndex = 12
+
+    bestLatencyBtn.MouseButton1Click:Connect(function()
+    local ok, err = pcall(function()
+        refreshServers("BestLatency")
+    end)
+
+    if not ok then
+        warn("Error while searching for Best Latency:", err)
+    end
+end)
+
 	table.insert(serverFrames, serverFrame)
 end
 
@@ -2969,31 +2989,6 @@ RejoinButton.MouseButton1Click:Connect(function()
 		warn("An error occurred on the button rejoint button servers. Please try again", err)
 	end
 end)
-
---------------------------------------------------------------------------------------------------------------------
-
-local bestLatencyBtn = Instance.new("TextButton", headerFrame)
-bestLatencyBtn.Size = UDim2.new(0, 120, 0, 28)
-bestLatencyBtn.Position = UDim2.new(1, -130, 0, 10) 
-bestLatencyBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-bestLatencyBtn.Text = "Best Latency"
-bestLatencyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-bestLatencyBtn.Font = Enum.Font.Ubuntu
-bestLatencyBtn.TextSize = 14
-bestLatencyBtn.ZIndex = 30
-bestLatencyBtn.AutoButtonColor = true
-bestLatencyBtn.BorderSizePixel = 0
-
-bestLatencyBtn.MouseButton1Click:Connect(function()
-    local ok, err = pcall(function()
-        refreshServers("BestLatency")
-    end)
-
-    if not ok then
-        warn("Error while searching for Best Latency:", err)
-    end
-end)
-
 
 
 --------------------------------------------------------------------------------------------------------------------
