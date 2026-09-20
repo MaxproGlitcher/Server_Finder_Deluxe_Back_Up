@@ -773,8 +773,6 @@ mainFrame.ZIndex = 5
 local corner = Instance.new("UICorner")
 corner.Parent = mainFrame
 
---------------------------------------------------------------------------------------------------------------------
-
 local headerFrame = Instance.new("Frame", mainFrame)
 headerFrame.Size = UDim2.new(1, -20, 0, 80) 
 headerFrame.Position = UDim2.new(0, 10, 0, 50)
@@ -846,11 +844,7 @@ local function updateCurrentServerHeader()
             "\nPlayers: " .. players .. "/" .. maxPlayers ..
             "\nGame ID: " .. gameId ..
             "\nServer ID: " .. serverId
-   end)
-
-    if not ok then
-        warn("[SFD] updateCurrentServerHeader ERROR: ", err)
-    end
+    end)
 end
 
 task.spawn(function()
@@ -859,7 +853,7 @@ task.spawn(function()
     end
 end)
 
---------------------------------------------------------------------------------------------------------------------
+
 
 -- Détection des Screen 
 
@@ -868,9 +862,6 @@ if isOnMobile or SCREEN_SIZE.X < 800 then
 else
 	mainFrame.Size = UDim2.new(0, 650, 0, 500)
 end
-
-
---------------------------------------------------------------------------------------------------------------------
 
 local dragging, dragInput, dragStart, startPos
 local function updateDrag(input)
