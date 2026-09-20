@@ -773,6 +773,88 @@ mainFrame.ZIndex = 5
 local corner = Instance.new("UICorner")
 corner.Parent = mainFrame
 
+local headerFrame = Instance.new("Frame", mainFrame)
+headerFrame.Size = UDim2.new(1, -20, 0, 80) 
+headerFrame.Position = UDim2.new(0, 10, 0, 50)
+headerFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+headerFrame.BorderSizePixel = 0
+headerFrame.ZIndex = 30
+
+headerFrame.Visible = false
+
+local currentServerTitle = Instance.new("TextLabel", headerFrame)
+currentServerTitle.Size = UDim2.new(1, -20, 0, 18)
+currentServerTitle.Position = UDim2.new(0, 10, 0, 4)
+currentServerTitle.BackgroundTransparency = 1
+currentServerTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+currentServerTitle.Font = Enum.Font.Ubuntu
+currentServerTitle.TextSize = 13
+currentServerTitle.TextXAlignment = Enum.TextXAlignment.Left
+currentServerTitle.Text = "Current Server"
+currentServerTitle.ZIndex = 30
+
+local currentServerInfo = Instance.new("TextLabel", headerFrame)
+currentServerInfo.Size = UDim2.new(1, -20, 0, 55)
+currentServerInfo.Position = UDim2.new(0, 10, 0, 22)
+currentServerInfo.BackgroundTransparency = 1
+currentServerInfo.TextColor3 = Color3.fromRGB(255, 255, 255)
+currentServerInfo.Font = Enum.Font.Ubuntu
+currentServerInfo.TextSize = 13
+currentServerInfo.TextXAlignment = Enum.TextXAlignment.Left
+currentServerInfo.TextYAlignment = Enum.TextYAlignment.Top
+currentServerInfo.ZIndex = 30
+currentServerInfo.TextWrapped = true
+
+
+local function safeGetPing()
+    local stats = game:GetService("Stats")
+    local ok, value = pcall(function()
+        local item = stats.Network.ServerStatsItem["Data Ping"]
+        if item and item.GetValue then
+            return item:GetValue()
+        end
+        return 0
+    end)
+    return ok and value or 0
+end
+
+
+local function safeGetFPS()
+    local ok, value = pcall(function()
+        if workspace.GetRealPhysicsFPS then
+            return workspace:GetRealPhysicsFPS()
+        end
+        return 60
+    end)
+    return ok and value or 60
+end
+
+local function updateCurrentServerHeader()
+    pcall(function()
+        local ping = safeGetPing()
+        local fps = safeGetFPS()
+        local players = #game.Players:GetPlayers()
+        local maxPlayers = game.Players.MaxPlayers
+        local gameId = game.PlaceId
+        local serverId = game.JobId
+
+        currentServerInfo.Text =
+            "Ping: " .. math.floor(ping) ..
+            "   FPS: " .. string.format("%.1f", fps) ..
+            "\nPlayers: " .. players .. "/" .. maxPlayers ..
+            "\nGame ID: " .. gameId ..
+            "\nServer ID: " .. serverId
+    end)
+end
+
+task.spawn(function()
+    while task.wait(0.5) do
+        updateCurrentServerHeader()
+    end
+end)
+
+
+
 -- Détection des Screen 
 
 if isOnMobile or SCREEN_SIZE.X < 800 then
@@ -955,8 +1037,6 @@ local function loadLogo()
 end
 
 task.defer(loadLogo)
-
-
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -1567,7 +1647,7 @@ local versionLabel = Instance.new("TextLabel", mainFrame)
 versionLabel.Size = UDim2.new(0, 150, 0, 25)
 versionLabel.Position = UDim2.new(0, 10, 0, 8)
 versionLabel.BackgroundTransparency = 1
-versionLabel.Text = "v7.7"
+versionLabel.Text = "v7.8"
 versionLabel.Font = Enum.Font.Ubuntu
 versionLabel.TextSize = 16
 versionLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -1730,8 +1810,8 @@ end
 -- ════════════════════════════════════════
 
 local scrollFrame = Instance.new("ScrollingFrame", mainFrame)
-scrollFrame.Size = UDim2.new(1, -20, 1, -60)
-scrollFrame.Position = UDim2.new(0, 10, 0, 50)
+scrollFrame.Position = UDim2.new(0, 10, 0, 140)
+scrollFrame.Size = UDim2.new(1, -20, 1, -150)
 scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
 scrollFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 scrollFrame.ScrollBarThickness = 6
@@ -1743,6 +1823,7 @@ local layout = Instance.new("UIListLayout", scrollFrame)
 layout.SortOrder = Enum.SortOrder.LayoutOrder
 layout.Padding = UDim.new(0, 10)
 layout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+
 
 local isScrolling = false
 
@@ -1761,6 +1842,9 @@ scrollFrame.InputEnded:Connect(function(input)
 		end)
 	end
 end)
+
+headerFrame.Visible = true
+
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -2930,102 +3014,114 @@ local function toggleGuiSize()
 		warn("Failed to play click sound resizeButton:", soundErr)
 	end
 
-	if isSmall then
-		mainFrame.Size = UDim2.new(0, 650, 0, 500)
-		scrollFrame.Size = UDim2.new(1, -20, 1, -60)
-		scrollFrame.Position = UDim2.new(0, 10, 0, 50)
+	 if isSmall then
+        
+        mainFrame.Size = UDim2.new(0, 650, 0, 500)
+        scrollFrame.Position = UDim2.new(0, 10, 0, 140)
+        scrollFrame.Size = UDim2.new(1, -20, 1, -150)
 
-		if refreshBtn then
-			refreshBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-			refreshBtn.Size = UDim2.new(0, 47, 0, 47)
-			refreshBtn.Position = UDim2.new(0.5, 250, 0.5, -220)
-		end
+        
+        headerFrame.Size = UDim2.new(1, -20, 0, 80)
+        headerFrame.Position = UDim2.new(0, 10, 0, 50)
 
-		if closeBtn then
-			closeBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-			closeBtn.Size = UDim2.new(0, 40, 0, 40)
-			closeBtn.Position = UDim2.new(0.5, 298, 0.5, -220)
-		end
+        
+        if refreshBtn then
+            refreshBtn.AnchorPoint = Vector2.new(0.5, 0.5)
+            refreshBtn.Size = UDim2.new(0, 47, 0, 47)
+            refreshBtn.Position = UDim2.new(0.5, 250, 0.5, -220)
+        end
 
-		if resizeButton then
-			resizeButton.AnchorPoint = Vector2.new(0.5, 0.5)
-			resizeButton.Size = UDim2.new(0, 40, 0, 40)
-			resizeButton.Position = UDim2.new(0.5, 157, 0.5, -220)
-		end
+        if closeBtn then
+            closeBtn.AnchorPoint = Vector2.new(0.5, 0.5)
+            closeBtn.Size = UDim2.new(0, 40, 0, 40)
+            closeBtn.Position = UDim2.new(0.5, 298, 0.5, -220)
+        end
 
-		if RejoinButton then
-			RejoinButton.AnchorPoint = Vector2.new(0.5, 0.5)
-			RejoinButton.Size = UDim2.new(0, 40, 0, 40)
-			RejoinButton.Position = UDim2.new(0.5, 204, 0.5, -220)
-		end
+        if resizeButton then
+            resizeButton.AnchorPoint = Vector2.new(0.5, 0.5)
+            resizeButton.Size = UDim2.new(0, 40, 0, 40)
+            resizeButton.Position = UDim2.new(0.5, 157, 0.5, -220)
+        end
 
-		if lowPlayersBtn then
-			lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-			lowPlayersBtn.Size = UDim2.new(0, 40, 0, 40)
-			lowPlayersBtn.Position = UDim2.new(0.5, -183, 0.5, -220)
-		end
+        if RejoinButton then
+            RejoinButton.AnchorPoint = Vector2.new(0.5, 0.5)
+            RejoinButton.Size = UDim2.new(0, 40, 0, 40)
+            RejoinButton.Position = UDim2.new(0.5, 204, 0.5, -220)
+        end
 
-		if maxPlayersBtn then
-			maxPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-			maxPlayersBtn.Size = UDim2.new(0, 40, 0, 40)
-			maxPlayersBtn.Position = UDim2.new(0.5, -264, 0.5, -220)
-		end
+        if lowPlayersBtn then
+            lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
+            lowPlayersBtn.Size = UDim2.new(0, 40, 0, 40)
+            lowPlayersBtn.Position = UDim2.new(0.5, -183, 0.5, -220)
+        end
 
-		if CopyGamelive then
-			CopyGamelive.AnchorPoint = Vector2.new(0.5, 0.5)
-			CopyGamelive.Size = UDim2.new(0, 41, 0, 41)
-			CopyGamelive.Position = UDim2.new(0.5, -227, 0.5, -220)
-		end
+        if maxPlayersBtn then
+            maxPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
+            maxPlayersBtn.Size = UDim2.new(0, 40, 0, 40)
+            maxPlayersBtn.Position = UDim2.new(0.5, -264, 0.5, -220)
+        end
 
-	else  
-		mainFrame.Size = UDim2.new(0, 549, 0, 390)
-		scrollFrame.Size = UDim2.new(1, -10, 1, -40)
-		scrollFrame.Position = UDim2.new(0, 5, 0, 40)
+        if CopyGamelive then
+            CopyGamelive.AnchorPoint = Vector2.new(0.5, 0.5)
+            CopyGamelive.Size = UDim2.new(0, 41, 0, 41)
+            CopyGamelive.Position = UDim2.new(0.5, -227, 0.5, -220)
+        end
 
-		if refreshBtn then
-			refreshBtn.Position = UDim2.new(0.5, 225, 0.5, -175)
-			refreshBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-			refreshBtn.Size = UDim2.new(0, 30, 0, 30)
-		end
-
-		if closeBtn then
-			closeBtn.Position = UDim2.new(0.5, 255, 0.5, -175)
-			closeBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-			closeBtn.Size = UDim2.new(0, 25, 0, 25)
-		end
-
-		if RejoinButton then
-			RejoinButton.AnchorPoint = Vector2.new(0.5, 0.5)
-			RejoinButton.Size = UDim2.new(0, 25, 0, 25)
-			RejoinButton.Position = UDim2.new(0.5, 195, 0.5, -175)
-		end
-
-		if maxPlayersBtn then
-			maxPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-			maxPlayersBtn.Size = UDim2.new(0, 25, 0, 25)
-			maxPlayersBtn.Position = UDim2.new(0.5, -222, 0.5, -175)
-		end
+    else
+        
+        mainFrame.Size = UDim2.new(0, 549, 0, 390)
+        scrollFrame.Position = UDim2.new(0, 5, 0, 110)
+        scrollFrame.Size = UDim2.new(1, -10, 1, -120)
 
 
-		if lowPlayersBtn then
-			lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-			lowPlayersBtn.Size = UDim2.new(0, 25, 0, 25)
-			lowPlayersBtn.Position = UDim2.new(0.5, -173, 0.5, -175)
-		end
+        headerFrame.Size = UDim2.new(1, -10, 0, 80)
+        headerFrame.Position = UDim2.new(0, 5, 0, 40)
 
-		if CopyGamelive then
-			CopyGamelive.AnchorPoint = Vector2.new(0.5, 0.5)
-			CopyGamelive.Size = UDim2.new(0, 25, 0, 25)
-			CopyGamelive.Position = UDim2.new(0.5, -199, 0.5, -175)
-		end
 
-		if resizeButton then
-			resizeButton.AnchorPoint = Vector2.new(0.5, 0.5)
-			resizeButton.Size = UDim2.new(0, 25, 0, 25)
-			resizeButton.Position = UDim2.new(0.5, 167, 0.5, -175)
-		end
-	end
-	isSmall = not isSmall
+        if refreshBtn then
+            refreshBtn.Position = UDim2.new(0.5, 225, 0.5, -175)
+            refreshBtn.AnchorPoint = Vector2.new(0.5, 0.5)
+            refreshBtn.Size = UDim2.new(0, 30, 0, 30)
+        end
+
+        if closeBtn then
+            closeBtn.Position = UDim2.new(0.5, 255, 0.5, -175)
+            closeBtn.AnchorPoint = Vector2.new(0.5, 0.5)
+            closeBtn.Size = UDim2.new(0, 25, 0, 25)
+        end
+
+        if RejoinButton then
+            RejoinButton.AnchorPoint = Vector2.new(0.5, 0.5)
+            RejoinButton.Size = UDim2.new(0, 25, 0, 25)
+            RejoinButton.Position = UDim2.new(0.5, 195, 0.5, -175)
+        end
+
+        if maxPlayersBtn then
+            maxPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
+            maxPlayersBtn.Size = UDim2.new(0, 25, 0, 25)
+            maxPlayersBtn.Position = UDim2.new(0.5, -222, 0.5, -175)
+        end
+
+        if lowPlayersBtn then
+            lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
+            lowPlayersBtn.Size = UDim2.new(0, 25, 0, 25)
+            lowPlayersBtn.Position = UDim2.new(0.5, -173, 0.5, -175)
+        end
+
+        if CopyGamelive then
+            CopyGamelive.AnchorPoint = Vector2.new(0.5, 0.5)
+            CopyGamelive.Size = UDim2.new(0, 25, 0, 25)
+            CopyGamelive.Position = UDim2.new(0.5, -199, 0.5, -175)
+        end
+
+        if resizeButton then
+            resizeButton.AnchorPoint = Vector2.new(0.5, 0.5)
+            resizeButton.Size = UDim2.new(0, 25, 0, 25)
+            resizeButton.Position = UDim2.new(0.5, 167, 0.5, -175)
+        end
+    end
+
+    isSmall = not isSmall
 end
 
 resizeButton.MouseButton1Click:Connect(toggleGuiSize)
@@ -3130,7 +3226,7 @@ Modules.print = function(color, text, size)
 	print(Text)
 end
 
-local version = "7.7"
+local version = "7.8"
 
 local translations = {
 	["fr"] = {
@@ -3203,4 +3299,3 @@ Modules.print("Grey", msg.contact, 20)
 Modules.print("Grey", msg.line, 20)
 end)
 --------------------------------------------------------------------------------------------------------------------
-
