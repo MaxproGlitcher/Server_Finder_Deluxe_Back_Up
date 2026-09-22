@@ -1908,14 +1908,6 @@ end
 
 print(GetTotalPlayers(game.PlaceId))
 
-
-pcall(function()
-    local env = getfenv and getfenv(0)
-    if type(env) == "table" and table.freeze and not table.isfrozen(env) then
-        pcall(table.freeze, env)
-    end
-end)
-
 local posChange = 8
 local serverFrames = {}
 
@@ -2277,7 +2269,7 @@ function updateServerList(servers)
 end
 
 
-function refreshServers()
+function refreshServers(orderBy)
 
 task.spawn(function()
     local success, result = pcall(function()
@@ -2292,7 +2284,7 @@ task.spawn(function()
     end
 end)
 
-    local ok, servers = pcall(GetAllServers, game.PlaceId)
+    local ok, servers = pcall(GetAllServers, game.PlaceId, orderBy)
 
     if typeof(servers) == "table" and #servers > 0 then
         local allServersFlat = {}
