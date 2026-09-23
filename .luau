@@ -1685,155 +1685,6 @@ versionLabel.ZIndex = 16
 --------------------------------------------------------------------------------------------------------------------
 
 -- ════════════════════════════════════════
---    (Décoration pour le Nom du Gui)
--- ════════════════════════════════════════
-
-local function GetEasterDate(year)
-	local A = math.floor(year/100)
-	local B = math.floor((13+8*A)/25)
-	local C = (15-B+A-math.floor(A/4))%30
-	local D = (4+A-math.floor(A/4))%7
-	local E = (19*(year%19)+C)%30
-	local F = (2*(year%4)+4*(year%7)+6*E+D)%7
-	local G = 22 + E + F
-
-	if E == 29 and F == 6 then
-		return 4, 19
-	elseif E == 28 and F == 6 then
-		return 4, 18
-	elseif G > 31 then
-		return 4, G-31
-	else
-		return 3, G
-	end
-end
-
-local isXmas, isNewYear, isEaster, isHalloween, isValentine = false, false, false, false, false
-
-local success, err = pcall(function()
-	local date = os.date("*t")
-	local emonth, eday = GetEasterDate(date.year)
-	isXmas = date.month == 12 and date.day >= 15 and date.day <= 29
-	isHalloween = (date.month == 10 and date.day >= 23) or (date.month == 11 and date.day <= 1)
-	isNewYear = (date.month == 12 and date.day >= 30) or (date.month == 1 and date.day <= 2)
-	isValentineDay = (date.month == 2 and date.day == 14)
-	isEaster = (date.month == emonth and date.day == eday)
-end)
-
-if not success then
-	warn("Date system error for writing Server Finder Deluxe:", err)
-end
-
-local function decorateTitle(startEmoji, endEmoji)
-	title.Text = startEmoji .. " Server Finder Deluxe " .. endEmoji
-	title.TextScaled = false
-	title.TextSize = 25
-	title.Position = UDim2.new(0, 0, 0, 2)
-end
-
-
-if isXmas then
-	decorateTitle("🎄", "🎄")
-	local cycleColors = {
-		Color3.fromRGB(0, 255, 0),
-		Color3.fromRGB(255, 0, 0),
-		Color3.fromRGB(255, 255, 255)
-	}
-	local index = 1
-	task.spawn(function()
-		while true do
-			title.TextColor3 = cycleColors[index]
-			versionLabel.TextColor3 = cycleColors[index]
-			index = index % #cycleColors + 1
-			task.wait(0.5)
-		end
-	end)
-end
-
-
-if isHalloween then
-	decorateTitle("🎃", "🎃")
-	local cycleColors = {
-		Color3.fromRGB(0, 0, 0),
-		Color3.fromRGB(255, 165, 0)
-	}
-	local index = 1
-	task.spawn(function()
-		while true do
-			title.TextColor3 = cycleColors[index]
-			versionLabel.TextColor3 = cycleColors[index]
-			index = index % #cycleColors + 1
-			task.wait(0.5)
-		end
-	end)
-end
-
-
-if isNewYear then
-	decorateTitle("🎉", "🎉")
-	local cycleColors = {
-		Color3.fromRGB(255, 255, 0),
-		Color3.fromRGB(0, 0, 0)
-	}
-	local index = 1
-	task.spawn(function()
-		while true do
-			title.TextColor3 = cycleColors[index]
-			versionLabel.TextColor3 = cycleColors[index]
-			index = index % #cycleColors + 1
-			task.wait(0.5)
-		end
-	end)
-end
-
-
-if isEaster then
-	decorateTitle("🐰", "🐰")
-	local cycleColors = {
-		Color3.fromRGB(216, 191, 216),
-		Color3.fromRGB(255, 182, 193),
-		Color3.fromRGB(193, 225, 193),
-		Color3.fromRGB(173, 216, 230)
-	}
-	local index = 1
-	task.spawn(function()
-		while true do
-			title.TextColor3 = cycleColors[index]
-			versionLabel.TextColor3 = cycleColors[index]
-			index = index % #cycleColors + 1
-			task.wait(0.5)
-		end
-	end)
-end
-
-
-if isValentineDay then
-	decorateTitle("💗", "💗")
-	local cycleColors = { 
-		Color3.fromRGB(0, 0, 0),
-		Color3.fromRGB( 255, 85, 127)
-	}
-	local index = 1
-	task.spawn(function()
-		while true do
-			title.TextColor3 = cycleColors[index]
-			versionLabel.TextColor3 = cycleColors[index]
-			index = index % #cycleColors + 1
-			task.wait(0.5)
-		end
-	end)
-end
-
-
-
-if not isXmas and not isHalloween and not isNewYear and not isEaster and not isValentineDay then
-	title.Text = "Server Finder Deluxe"
-	title.Position = UDim2.new(0, 0, 0, 0)
-end
-
---------------------------------------------------------------------------------------------------------------------
-
--- ════════════════════════════════════════
 --               (Scroll Frame)
 -- ════════════════════════════════════════
 
@@ -1907,6 +1758,7 @@ local function GetTotalPlayers(placeId)
 end
 
 print(GetTotalPlayers(game.PlaceId))
+
 
 local posChange = 8
 local serverFrames = {}
@@ -2284,7 +2136,7 @@ task.spawn(function()
     end
 end)
 
-    local ok, servers = pcall(GetAllServers, game.PlaceId, orderBy)
+     local ok, servers = pcall(GetAllServers, game.PlaceId, orderBy)
 
     if typeof(servers) == "table" and #servers > 0 then
         local allServersFlat = {}
@@ -3145,63 +2997,6 @@ local function toggleGuiSize()
 end
 
 resizeButton.MouseButton1Click:Connect(toggleGuiSize)
-
---------------------------------------------------------------------------------------------------------------------
-
--- ════════════════════════════════════════
---    (Services MODE PERFORMANCE BOOST)
--- ════════════════════════════════════════
-
-local Players = game:GetService("Players")
-local Lighting = game:GetService("Lighting")
-
-
-local UserSettings = settings():GetService("RenderSettings")
-local originalSettings = {
-	QualityLevel = UserSettings.QualityLevel,
-	EditQualityLevel = UserSettings.EditQualityLevel,
-	GlobalShadows = Lighting.GlobalShadows
-}
-
-
-local function EnablePerformanceBoost()
-	UserSettings.QualityLevel = Enum.QualityLevel.Level01
-	UserSettings.EditQualityLevel = Enum.QualityLevel.Level01
-
-	
-	for _, effect in pairs(Lighting:GetChildren()) do
-		if effect:IsA("PostEffect") then
-			effect.Enabled = false
-		end
-	end
-
-	
-	Lighting.GlobalShadows = false
-end
-
-
-local function DisablePerformanceBoost()
-	UserSettings.QualityLevel = originalSettings.QualityLevel
-	UserSettings.EditQualityLevel = originalSettings.EditQualityLevel
-
-	for _, effect in pairs(Lighting:GetChildren()) do
-		if effect:IsA("PostEffect") then
-			effect.Enabled = true
-		end
-	end
-
-	Lighting.GlobalShadows = originalSettings.GlobalShadows
-end
-
-
-EnablePerformanceBoost()
-
-
-closeBtn.MouseButton1Click:Connect(function()
-	DisablePerformanceBoost()
-	screenGui.Enabled = false
-end)
-
 
 --------------------------------------------------------------------------------------------------------------------
 
