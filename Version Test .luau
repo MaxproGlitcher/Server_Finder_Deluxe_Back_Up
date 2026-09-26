@@ -2505,8 +2505,6 @@ closeBtn.MouseButton1Click:Connect(function()
 	end)
 end)
 
-
-
 --------------------------------------------------------------------------------------------------------------------
 
 -- ════════════════════════════════════════
@@ -2782,13 +2780,7 @@ local function toggleGuiSize()
             maxPlayersBtn.Size = UDim2.new(0, 65, 0, 30)
             maxPlayersBtn.Position = UDim2.new(0.5, -235, 0.5, -228)
         end
-
-        if CopyGamelive then
-            CopyGamelive.AnchorPoint = Vector2.new(0.5, 0.5)
-            CopyGamelive.Size = UDim2.new(0, 41, 0, 41)
-            CopyGamelive.Position = UDim2.new(0.5, -227, 0.5, -220)
-        end
-
+   
     else
         
         mainFrame.Size = UDim2.new(0, 549, 0, 390)
@@ -2828,12 +2820,6 @@ local function toggleGuiSize()
            lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
            lowPlayersBtn.Size = UDim2.new(0, 45, 0, 24)
            lowPlayersBtn.Position = UDim2.new(0, 110, 0, 20)
-        end
-
-        if CopyGamelive then
-            CopyGamelive.AnchorPoint = Vector2.new(0.5, 0.5)
-            CopyGamelive.Size = UDim2.new(0, 25, 0, 25)
-            CopyGamelive.Position = UDim2.new(0.5, -199, 0.5, -175)
         end
 
         if resizeButton then
