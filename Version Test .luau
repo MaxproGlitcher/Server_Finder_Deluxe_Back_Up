@@ -2947,13 +2947,13 @@ local function toggleGuiSize()
         if lowPlayersBtn then
             lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
             lowPlayersBtn.Size = UDim2.new(0, 65, 0, 30)
-            lowPlayersBtn.Position = UDim2.new(0.5, -165, 0.5, -228)
+            lowPlayersBtn.Position = UDim2.new(0.5, -152, 0.5, -228)
         end
 
         if maxPlayersBtn then
             maxPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
             maxPlayersBtn.Size = UDim2.new(0, 65, 0, 30)
-            maxPlayersBtn.Position = UDim2.new(0.5, -235, 0.5, -228)
+            maxPlayersBtn.Position = UDim2.new(0.5, -202, 0.5, -228)
         end
 
         if CopyGamelive then
