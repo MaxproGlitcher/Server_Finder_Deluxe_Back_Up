@@ -804,7 +804,7 @@ corner.Parent = mainFrame
 local headerFrame = Instance.new("Frame", mainFrame)
 headerFrame.Size = UDim2.new(1, -20, 0, 80) 
 headerFrame.Position = UDim2.new(0, 10, 0, 50)
-headerFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+headerFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
 headerFrame.BorderSizePixel = 0
 headerFrame.ZIndex = 30
 
