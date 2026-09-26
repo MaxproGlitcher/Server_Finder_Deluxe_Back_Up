@@ -2388,7 +2388,7 @@ lowPlayersBtn = Instance.new("TextButton")
 lowPlayersBtn.Parent = mainFrame
 lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
 lowPlayersBtn.Size = UDim2.new(0, 65, 0, 30)
-lowPlayersBtn.Position = UDim2.new(0.5, -165, 0.5, -228)
+lowPlayersBtn.Position = UDim2.new(0.5, -165, 0.5, -223)
 lowPlayersBtn.Text = "Ping ↓"
 lowPlayersBtn.Font = Enum.Font.GothamBold
 lowPlayersBtn.TextSize = 14
@@ -2407,7 +2407,7 @@ maxPlayersBtn = Instance.new("TextButton")
 maxPlayersBtn.Parent = mainFrame
 maxPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
 maxPlayersBtn.Size = UDim2.new(0, 65, 0, 30)
-maxPlayersBtn.Position = UDim2.new(0.5, -235, 0.5, -228)
+maxPlayersBtn.Position = UDim2.new(0.5, -235, 0.5, -223)
 maxPlayersBtn.Text = "Ping ↑"
 maxPlayersBtn.Font = Enum.Font.GothamBold
 maxPlayersBtn.TextSize = 14
@@ -2772,13 +2772,13 @@ local function toggleGuiSize()
         if lowPlayersBtn then
             lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
             lowPlayersBtn.Size = UDim2.new(0, 65, 0, 30)
-            lowPlayersBtn.Position = UDim2.new(0.5, -165, 0.5, -228)
+            lowPlayersBtn.Position = UDim2.new(0.5, -165, 0.5, -223)
         end
 
         if maxPlayersBtn then
             maxPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
             maxPlayersBtn.Size = UDim2.new(0, 65, 0, 30)
-            maxPlayersBtn.Position = UDim2.new(0.5, -235, 0.5, -228)
+            maxPlayersBtn.Position = UDim2.new(0.5, -235, 0.5, -223)
         end
    
     else
