@@ -2724,15 +2724,6 @@ clickSoundResize.SoundId = "rbxassetid://9120093264"
 clickSoundResize.Volume = 1
 clickSoundResize.PlayOnRemove = false
 
-local lineFrame = Instance.new("Frame", mainFrame)
-lineFrame.Name = "SeparatorLine"
-lineFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-lineFrame.BorderSizePixel = 0
-lineFrame.ZIndex = 30
-lineFrame.Position = UDim2.new(0, 5, 0, 121)
-lineFrame.Size = UDim2.new(1, -10, 0, 2)
-
-
 local function toggleGuiSize()
 	
 	local soundOk, soundErr = pcall(function()
@@ -2751,9 +2742,6 @@ local function toggleGuiSize()
         headerFrame.Size = UDim2.new(1, -20, 0, 80)
         headerFrame.Position = UDim2.new(0, 10, 0, 50)
 
-		lineFrame.Position = UDim2.new(0, 10, 0, 131)
-        lineFrame.Size = UDim2.new(1, -20, 0, 2)
-      
         if refreshBtn then
             refreshBtn.AnchorPoint = Vector2.new(0.5, 0.5)
             refreshBtn.Size = UDim2.new(0, 47, 0, 47)
@@ -2793,14 +2781,11 @@ local function toggleGuiSize()
     else
         
         mainFrame.Size = UDim2.new(0, 549, 0, 390)
-        scrollFrame.Position = UDim2.new(0, 5, 0, 110)
-        scrollFrame.Size = UDim2.new(1, -10, 1, -120)
+        scrollFrame.Position = UDim2.new(0, 5, 0, 130)
+        scrollFrame.Size = UDim2.new(1, -10, 1, -135)
 
         headerFrame.Size = UDim2.new(1, -10, 0, 80)
         headerFrame.Position = UDim2.new(0, 5, 0, 40)
-
-		lineFrame.Position = UDim2.new(0, 10, 0, 131)
-        lineFrame.Size = UDim2.new(1, -20, 0, 2)
 
         if refreshBtn then
             refreshBtn.Position = UDim2.new(0.5, 225, 0.5, -175)
