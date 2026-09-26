@@ -804,7 +804,7 @@ corner.Parent = mainFrame
 local headerFrame = Instance.new("Frame", mainFrame)
 headerFrame.Size = UDim2.new(1, -20, 0, 80) 
 headerFrame.Position = UDim2.new(0, 10, 0, 50)
-headerFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+headerFrame.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
 headerFrame.BorderSizePixel = 0
 headerFrame.ZIndex = 30
 
@@ -919,6 +919,7 @@ end)
 UserInputService.InputChanged:Connect(function(input)
 	if dragging and input == dragInput then updateDrag(input) end
 end)
+
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -1675,7 +1676,7 @@ local versionLabel = Instance.new("TextLabel", mainFrame)
 versionLabel.Size = UDim2.new(0, 150, 0, 25)
 versionLabel.Position = UDim2.new(0, 10, 0, 8)
 versionLabel.BackgroundTransparency = 1
-versionLabel.Text = "v7.8"
+versionLabel.Text = "v7.9"
 versionLabel.Font = Enum.Font.Ubuntu
 versionLabel.TextSize = 16
 versionLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -2360,7 +2361,6 @@ local refreshBtn = CreateRefreshButton(mainFrame)
 --     (Button/LowPlayers/MaxPlayers)
 -- ════════════════════════════════════════
 
-
 local function sortServers(servers, currentSort)
 	if typeof(servers) ~= "table" then return {} end
 
@@ -2376,28 +2376,51 @@ local function sortServers(servers, currentSort)
 		table.sort(servers, function(a, b)
 			return (a.ping or 9999) < (b.ping or 9999)
 		end)
+	elseif currentSort == "slowest" then
+		table.sort(servers, function(a, b)
+			return (a.ping or 0) > (b.ping or 0)
+		end)
 	end
 
 	return servers
 end
 
-
-local lowPlayersBtn = Instance.new("ImageButton", mainFrame)
+lowPlayersBtn = Instance.new("TextButton")
+lowPlayersBtn.Parent = mainFrame
 lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-lowPlayersBtn.Size = UDim2.new(0, 40, 0, 40)
-lowPlayersBtn.Position = UDim2.new(0.5, -183, 0.5, -220)
-lowPlayersBtn.Image = "http://www.roblox.com/asset/?id=78395837711238"
-lowPlayersBtn.BackgroundTransparency = 1
+lowPlayersBtn.Size = UDim2.new(0, 65, 0, 30)
+lowPlayersBtn.Position = UDim2.new(0.5, -165, 0.5, -224)
+lowPlayersBtn.Text = "Ping ↓"
+lowPlayersBtn.Font = Enum.Font.GothamBold
+lowPlayersBtn.TextSize = 14
+lowPlayersBtn.TextColor3 = Color3.fromRGB(255,255,255)
+lowPlayersBtn.BackgroundColor3 = Color3.fromRGB(45,45,45)
+lowPlayersBtn.BorderSizePixel = 1
+lowPlayersBtn.BorderColor3 = Color3.fromRGB(0,0,0)
 lowPlayersBtn.ZIndex = 12
 
-local maxPlayersBtn = Instance.new("ImageButton", mainFrame)
+lowCorner = Instance.new("UICorner")
+lowCorner.Parent = lowPlayersBtn
+lowCorner.CornerRadius = UDim.new(0,8)
+
+
+maxPlayersBtn = Instance.new("TextButton")
+maxPlayersBtn.Parent = mainFrame
 maxPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-maxPlayersBtn.Size = UDim2.new(0, 40, 0, 40)
-maxPlayersBtn.Position = UDim2.new(0.5, -264, 0.5, -220)
-maxPlayersBtn.Image = "http://www.roblox.com/asset/?id=117409611207958"
-maxPlayersBtn.BackgroundTransparency = 1
+maxPlayersBtn.Size = UDim2.new(0, 65, 0, 30)
+maxPlayersBtn.Position = UDim2.new(0.5, -235, 0.5, -224)
+maxPlayersBtn.Text = "Ping ↑"
+maxPlayersBtn.Font = Enum.Font.GothamBold
+maxPlayersBtn.TextSize = 14
+maxPlayersBtn.TextColor3 = Color3.fromRGB(255,255,255)
+maxPlayersBtn.BackgroundColor3 = Color3.fromRGB(45,45,45)
+maxPlayersBtn.BorderSizePixel = 1
+maxPlayersBtn.BorderColor3 = Color3.fromRGB(0,0,0)
 maxPlayersBtn.ZIndex = 12
 
+maxCorner = Instance.new("UICorner")
+maxCorner.Parent = maxPlayersBtn
+maxCorner.CornerRadius = UDim.new(0,8)
 
 local clickSoundLow = Instance.new("Sound", lowPlayersBtn)
 clickSoundLow.SoundId = "rbxassetid://9120093264"
@@ -2447,178 +2470,6 @@ end)
 --------------------------------------------------------------------------------------------------------------------
 
 -- ════════════════════════════════════════
---         (Button/Copie Servers ID)
--- ════════════════════════════════════════
-
-local TweenService = game:GetService("TweenService")
-local LocalizationService = game:GetService("LocalizationService")
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
-
-local langText = {
-	["fr"] = "L'ID du serveur a été copié avec succès !",
-	["en"] = "Server ID copied successfully!",
-	["es"] = "¡ID del servidor copiado correctamente!",
-	["de"] = "Server-ID erfolgreich kopiert!",
-	["it"] = "ID del server copiato con successo!",
-	["pt"] = "ID do servidor copiado com sucesso!",
-	["ru"] = "ID сервера успешно скопирован!",
-	["zh"] = "服务器ID复制成功！",
-	["tr"] = "Sunucu kimliği başarıyla kopyalandı!",
-	["ja"] = "サーバーIDが正常にコピーされました！",
-	["ar"] = "تم نسخ معرف الخادم بنجاح!",
-}
-
-local function getTranslatedMessage()
-	local langCode = (LocalizationService.RobloxLocaleId or "en"):sub(1,2)
-	return langText[langCode] or langText["en"]
-end
-
-
-local NotificationLib = {
-	_notifications = {},
-	_theme = {
-		primaryColor = Color3.fromRGB(30,30,30),
-		textColor = Color3.fromRGB(255,255,255),
-		font = Enum.Font.GothamSemibold,
-		cornerRadius = UDim.new(0,8)
-	},
-	_settings = {
-		duration = 4,
-		spacing = 12,
-		fadeTime = 0.28,
-		slideDistance = 18
-	},
-	_icons = { info = "rbxassetid://9405926389" }
-}
-
-function NotificationLib:_init()
-	if not self._container then
-		self._container = Instance.new("ScreenGui")
-		self._container.Name = "NotificationLibrary"
-		self._container.ResetOnSpawn = false
-		self._container.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-		self._container.Parent = game:GetService("CoreGui")
-	end
-end
-
-function NotificationLib:_calculatePosition(index)
-	local spacing = self._settings.spacing
-	local height = 90
-	return UDim2.new(1,-24,1,-24-(index-1)*(height+spacing))
-end
-
-function NotificationLib:_animateOut(frame, callback)
-	local tween = TweenService:Create(frame, TweenInfo.new(self._settings.fadeTime, Enum.EasingStyle.Quad), {
-		Position = frame.Position + UDim2.new(0,0,0,self._settings.slideDistance),
-		BackgroundTransparency = 1
-	})
-	tween:Play()
-	tween.Completed:Connect(function()
-		if frame and frame.Parent then frame:Destroy() end
-		if callback then callback() end
-	end)
-end
-
-function NotificationLib:Notify(opt)
-	self:_init()
-	opt = opt or {}
-	local title = opt.Title or "Notification"
-	local message = opt.Message or ""
-	local duration = opt.Duration or self._settings.duration
-
-	local frame = Instance.new("Frame")
-	frame.BackgroundColor3 = self._theme.primaryColor
-	frame.Size = UDim2.new(0,340,0,90)
-	frame.AnchorPoint = Vector2.new(1,1)
-	frame.Position = self:_calculatePosition(#self._notifications+1)
-	frame.Parent = self._container
-	Instance.new("UICorner", frame).CornerRadius = self._theme.cornerRadius
-
-	local icon = Instance.new("ImageLabel", frame)
-	icon.Image = self._icons.info
-	icon.Size = UDim2.new(0,28,0,28)
-	icon.Position = UDim2.new(0,12,0,12)
-	icon.BackgroundTransparency = 1
-
-	local titleLabel = Instance.new("TextLabel", frame)
-	titleLabel.Font = self._theme.font
-	titleLabel.TextColor3 = self._theme.textColor
-	titleLabel.TextSize = 16
-	titleLabel.TextXAlignment = Enum.TextXAlignment.Left
-	titleLabel.Text = title
-	titleLabel.BackgroundTransparency = 1
-	titleLabel.Size = UDim2.new(1,-60,0,22)
-	titleLabel.Position = UDim2.new(0,48,0,10)
-
-	local msgLabel = Instance.new("TextLabel", frame)
-	msgLabel.Font = Enum.Font.Gotham
-	msgLabel.TextColor3 = self._theme.textColor
-	msgLabel.TextSize = 14
-	msgLabel.TextWrapped = true
-	msgLabel.TextXAlignment = Enum.TextXAlignment.Left
-	msgLabel.Text = message
-	msgLabel.BackgroundTransparency = 1
-	msgLabel.Size = UDim2.new(1,-60,0,48)
-	msgLabel.Position = UDim2.new(0,48,0,30)
-
-	table.insert(self._notifications, frame)
-
-	task.delay(duration, function()
-		if frame and frame.Parent then
-			self:_animateOut(frame,function()
-				for i,v in ipairs(self._notifications) do
-					if v==frame then table.remove(self._notifications,i); break end
-				end
-			end)
-		end
-	end)
-end
-
-
-local CopyGamelive = Instance.new("ImageButton", mainFrame)
-CopyGamelive.AnchorPoint = Vector2.new(0.5, 0.5)
-CopyGamelive.Size = UDim2.new(0, 41, 0, 41)
-CopyGamelive.Position = UDim2.new(0.5, -227, 0.5, -220)
-CopyGamelive.Image = "http://www.roblox.com/asset/?id=122024633828045"
-CopyGamelive.BackgroundTransparency = 1
-CopyGamelive.ZIndex = 6
-
-local clickSoundCopyLive = Instance.new("Sound", CopyGamelive)
-clickSoundCopyLive.SoundId = "rbxassetid://9120093264"
-clickSoundCopyLive.Volume = 1
-clickSoundCopyLive.PlayOnRemove = false
-
-CopyGamelive.MouseButton1Click:Connect(function()
-	
-	local soundOk, soundErr = pcall(function()
-		clickSoundCopyLive:Play()
-	end)
-	if not soundOk then
-		warn("Failed to play click sound CopyGamelive:", soundErr)
-	end
-
-	local success, err = pcall(function()
-		local currentServerId = game.JobId
-		local joinCommand = 'Roblox.GameLauncher.joinGameInstance(' .. game.PlaceId .. ',"' .. currentServerId .. '")'
-		setclipboard(joinCommand)
-
-		NotificationLib:Notify({
-			Title = "Server ID",
-			Message = getTranslatedMessage(),
-			Duration = 4
-		})
-	end)
-	if not success then
-		warn("An error occurred on the copy server button. Please try again", err)
-	end
-end)
-
-
---------------------------------------------------------------------------------------------------------------------
-
--- ════════════════════════════════════════
 --         (Button/Close)
 -- ════════════════════════════════════════
 
@@ -2633,7 +2484,7 @@ closeBtn.ZIndex = 6
 local clickSoundClose = Instance.new("Sound")
 clickSoundClose.SoundId = "rbxassetid://9120093264"
 clickSoundClose.Volume = 1
-clickSoundClose.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui") -- Mettre le son dans PlayerGui
+clickSoundClose.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui") 
 
 closeBtn.MouseButton1Click:Connect(function()
 	local soundOk, soundErr = pcall(function()
@@ -2654,8 +2505,6 @@ closeBtn.MouseButton1Click:Connect(function()
 		end)
 	end)
 end)
-
-
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -2876,7 +2725,6 @@ clickSoundResize.SoundId = "rbxassetid://9120093264"
 clickSoundResize.Volume = 1
 clickSoundResize.PlayOnRemove = false
 
-
 local function toggleGuiSize()
 	
 	local soundOk, soundErr = pcall(function()
@@ -2891,12 +2739,10 @@ local function toggleGuiSize()
         mainFrame.Size = UDim2.new(0, 650, 0, 500)
         scrollFrame.Position = UDim2.new(0, 10, 0, 140)
         scrollFrame.Size = UDim2.new(1, -20, 1, -150)
-
-        
+    
         headerFrame.Size = UDim2.new(1, -20, 0, 80)
         headerFrame.Position = UDim2.new(0, 10, 0, 50)
 
-        
         if refreshBtn then
             refreshBtn.AnchorPoint = Vector2.new(0.5, 0.5)
             refreshBtn.Size = UDim2.new(0, 47, 0, 47)
@@ -2923,32 +2769,24 @@ local function toggleGuiSize()
 
         if lowPlayersBtn then
             lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-            lowPlayersBtn.Size = UDim2.new(0, 40, 0, 40)
-            lowPlayersBtn.Position = UDim2.new(0.5, -183, 0.5, -220)
+            lowPlayersBtn.Size = UDim2.new(0, 65, 0, 30)
+            lowPlayersBtn.Position = UDim2.new(0.5, -165, 0.5, -224)
         end
 
         if maxPlayersBtn then
             maxPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-            maxPlayersBtn.Size = UDim2.new(0, 40, 0, 40)
-            maxPlayersBtn.Position = UDim2.new(0.5, -264, 0.5, -220)
+            maxPlayersBtn.Size = UDim2.new(0, 65, 0, 30)
+            maxPlayersBtn.Position = UDim2.new(0.5, -235, 0.5, -224)
         end
-
-        if CopyGamelive then
-            CopyGamelive.AnchorPoint = Vector2.new(0.5, 0.5)
-            CopyGamelive.Size = UDim2.new(0, 41, 0, 41)
-            CopyGamelive.Position = UDim2.new(0.5, -227, 0.5, -220)
-        end
-
+   
     else
         
         mainFrame.Size = UDim2.new(0, 549, 0, 390)
-        scrollFrame.Position = UDim2.new(0, 5, 0, 110)
-        scrollFrame.Size = UDim2.new(1, -10, 1, -120)
-
+        scrollFrame.Position = UDim2.new(0, 5, 0, 130)
+        scrollFrame.Size = UDim2.new(1, -10, 1, -135)
 
         headerFrame.Size = UDim2.new(1, -10, 0, 80)
         headerFrame.Position = UDim2.new(0, 5, 0, 40)
-
 
         if refreshBtn then
             refreshBtn.Position = UDim2.new(0.5, 225, 0.5, -175)
@@ -2968,22 +2806,16 @@ local function toggleGuiSize()
             RejoinButton.Position = UDim2.new(0.5, 195, 0.5, -175)
         end
 
-        if maxPlayersBtn then
+       if  maxPlayersBtn then
             maxPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-            maxPlayersBtn.Size = UDim2.new(0, 25, 0, 25)
-            maxPlayersBtn.Position = UDim2.new(0.5, -222, 0.5, -175)
+            maxPlayersBtn.Size = UDim2.new(0, 45, 0, 24)
+            maxPlayersBtn.Position = UDim2.new(0, 62, 0, 20)
         end
 
-        if lowPlayersBtn then
-            lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-            lowPlayersBtn.Size = UDim2.new(0, 25, 0, 25)
-            lowPlayersBtn.Position = UDim2.new(0.5, -173, 0.5, -175)
-        end
-
-        if CopyGamelive then
-            CopyGamelive.AnchorPoint = Vector2.new(0.5, 0.5)
-            CopyGamelive.Size = UDim2.new(0, 25, 0, 25)
-            CopyGamelive.Position = UDim2.new(0.5, -199, 0.5, -175)
+      if  lowPlayersBtn then
+           lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
+           lowPlayersBtn.Size = UDim2.new(0, 45, 0, 24)
+           lowPlayersBtn.Position = UDim2.new(0, 112, 0, 20)
         end
 
         if resizeButton then
@@ -3041,7 +2873,7 @@ Modules.print = function(color, text, size)
 	print(Text)
 end
 
-local version = "7.8"
+local version = "7.9"
 
 local translations = {
 	["fr"] = {
