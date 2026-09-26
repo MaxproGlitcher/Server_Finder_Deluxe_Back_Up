@@ -412,26 +412,24 @@ getgenv().HasScannedAll = false
 -- ════════════════════════════════════════
 --         (Service/Info)
 -- ════════════════════════════════════════
-local Services = {
-    HttpService = game:GetService("HttpService"),
-    TeleportService = game:GetService("TeleportService"),
-    Players = game:GetService("Players"),
-    LocalPlayer = game:GetService("Players").LocalPlayer,
-    CoreGui = game:GetService("CoreGui"),
-    GuiService = game:GetService("GuiService"),
-    PlayerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"),
-    RobloxGui = game:GetService("CoreGui"):WaitForChild("RobloxGui"),
-    UserInputService = game:GetService("UserInputService"),
-    RunService = game:GetService("RunService"),
-    LocalizationService = game:GetService("LocalizationService"),
-    Stats = game:GetService("Stats"),
-    SoundService = game:GetService("SoundService"),
-    TweenService = game:GetService("TweenService"),
-    VRService = game:GetService("VRService"),
-    CaptureService = game:GetService("CaptureService"),
-    clipBoard = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set),
-    setthreadidentity = setthreadidentity or (syn and syn.set_thread_identity) or syn_context_set or setthreadcontext
-}
+
+local HttpService = game:GetService("HttpService")
+local TeleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local CoreGui = game:GetService("CoreGui")
+local GuiService = game:GetService("GuiService")
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local RobloxGui = CoreGui:WaitForChild("RobloxGui")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local LocalizationService = game:GetService("LocalizationService")
+local TweenService = game:GetService("TweenService")
+local VRService = game:GetService("VRService")
+local CaptureService = game:GetService("CaptureService")
+local SoundService = game:GetService("SoundService")
+local clipBoard = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set)
+local setthreadidentity = setthreadidentity or (syn and syn.set_thread_identity) or syn_context_set or setthreadcontext
 
 local function v8(v6)
     local v7 = false
@@ -1677,7 +1675,7 @@ local versionLabel = Instance.new("TextLabel", mainFrame)
 versionLabel.Size = UDim2.new(0, 150, 0, 25)
 versionLabel.Position = UDim2.new(0, 10, 0, 8)
 versionLabel.BackgroundTransparency = 1
-versionLabel.Text = "v7.9"
+versionLabel.Text = "v7.8"
 versionLabel.Font = Enum.Font.Ubuntu
 versionLabel.TextSize = 16
 versionLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -2874,7 +2872,7 @@ Modules.print = function(color, text, size)
 	print(Text)
 end
 
-local version = "7.9"
+local version = "7.8"
 
 local translations = {
 	["fr"] = {
