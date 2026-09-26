@@ -531,12 +531,11 @@ local httprequest = (syn and syn.request) or (http and http.request) or http_req
 --------------------------------------------------------------------------------------------------------------------
 
 -- ══════════════════════════════════════════════════
---   (Détection HTTP Function / Détection GetGenv)
+--   (Détection HTTP Function / Détection GetGenv / Request) 
 -- ══════════════════════════════════════════════════
 
 local LocalizationService = game:GetService("LocalizationService")
 local TweenService = game:GetService("TweenService")
-
 
 local hasGetGenv = false
 
@@ -546,20 +545,19 @@ pcall(function()
 	end
 end)
 
-
 local requestFunc
 local httpSuccess = false
 
 pcall(function()
-	if syn and syn.request then
+	if syn and typeof(syn.request) == "function" then
 		requestFunc = syn.request
-	elseif http and http.request then
+	elseif http and typeof(http.request) == "function" then
 		requestFunc = http.request
-	elseif http_request then
+	elseif typeof(http_request) == "function" then
 		requestFunc = http_request
-	elseif fluxus and fluxus.request then
+	elseif fluxus and typeof(fluxus.request) == "function" then
 		requestFunc = fluxus.request
-	elseif request then
+	elseif typeof(request) == "function" then
 		requestFunc = request
 	end
 end)
@@ -568,67 +566,77 @@ if requestFunc then
 	httpSuccess = true
 end
 
-
 local translations = {
 	fr = {
 		getgenv = "La fonction getgenv est introuvable ! ⚠️",
-		http = "Aucune fonction HTTP supportée trouvée ! ⚠️"
+		http = "Aucune fonction HTTP supportée trouvée ! ⚠️",
+		request = "Aucune fonction request supportée trouvée ! ⚠️"
 	},
 	en = {
 		getgenv = "getgenv function not found! ⚠️",
-		http = "No supported HTTP request function found! ⚠️"
+		http = "No supported HTTP request function found! ⚠️",
+		request = "No supported request function found! ⚠️"
 	},
 	es = {
 		getgenv = "¡Función getgenv no encontrada! ⚠️",
-		http = "¡No se encontró ninguna función HTTP compatible! ⚠️"
+		http = "¡No se encontró ninguna función HTTP compatible! ⚠️",
+		request = "¡No se encontró ninguna función request compatible! ⚠️"
 	},
 	pt = {
 		getgenv = "Função getgenv não encontrada! ⚠️",
-		http = "Nenhuma função HTTP suportada encontrada! ⚠️"
+		http = "Nenhuma função HTTP suportada encontrada! ⚠️",
+		request = "Nenhuma função request suportada encontrada! ⚠️"
 	},
 	tr = {
 		getgenv = "getgenv işlevi bulunamadı! ⚠️",
-		http = "Desteklenen HTTP isteği işlevi bulunamadı! ⚠️"
+		http = "Desteklenen HTTP isteği işlevi bulunamadı! ⚠️",
+		request = "Desteklenen request işlevi bulunamadı! ⚠️"
 	},
 	it = {
 		getgenv = "Funzione getgenv non trovata! ⚠️",
-		http = "Nessuna funzione HTTP supportata trovata! ⚠️"
+		http = "Nessuna funzione HTTP supportata trovata! ⚠️",
+		request = "Nessuna funzione request supportata trovata! ⚠️"
 	},
 	de = {
 		getgenv = "getgenv-Funktion nicht gefunden! ⚠️",
-		http = "Keine unterstützte HTTP-Anfragefunktion gefunden! ⚠️"
+		http = "Keine unterstützte HTTP-Anfragefunktion gefunden! ⚠️",
+		request = "Keine unterstützte request-Funktion gefunden! ⚠️"
 	},
 	ar = {
 		getgenv = "لم يتم العثور على دالة getgenv! ⚠️",
-		http = "لم يتم العثور على أي دالة HTTP مدعومة! ⚠️"
+		http = "لم يتم العثور على أي دالة HTTP مدعومة! ⚠️",
+		request = "لم يتم العثور على أي دالة request مدعومة! ⚠️"
 	},
 	ja = {
 		getgenv = "getgenv 関数が見つかりません！⚠️",
-		http = "サポートされているHTTPリクエスト機能が見つかりません！⚠️"
+		http = "サポートされているHTTPリクエスト機能が見つかりません！⚠️",
+		request = "サポートされているrequest関数が見つかりません！⚠️"
 	},
 	ru = {
 		getgenv = "Функция getgenv не найдена! ⚠️",
-		http = "Поддерживаемая функция HTTP-запроса не найдена! ⚠️"
+		http = "Поддерживаемая функция HTTP-запроса не найдена! ⚠️",
+		request = "Поддерживаемая функция request не найдена! ⚠️"
 	},
 	zh = {
 		getgenv = "未找到 getgenv 函数！⚠️",
-		http = "未找到受支持的HTTP请求函数！⚠️"
+		http = "未找到受支持的HTTP请求函数！⚠️",
+		request = "未找到受支持的request函数！⚠️"
 	}
 }
 
-local function getTranslatedMessage()
-	local langCode = (LocalizationService.RobloxLocaleId or "en"):sub(1,2)
-	return langText[langCode] or langText["en"]
+local function getTranslatedMessage(key)
+	local langCode = (LocalizationService.RobloxLocaleId or "en"):sub(1, 2)
+	local language = translations[langCode] or translations.en
+	return language[key] or language.en
 end
-
 
 local NotificationLib = {
 	_notifications = {},
 	_theme = {
-		primaryColor = Color3.fromRGB(30,30,30),
-		textColor = Color3.fromRGB(255,255,255),
+		primaryColor = Color3.fromRGB(30, 30, 30),
+		textColor = Color3.fromRGB(255, 255, 255),
 		font = Enum.Font.GothamSemibold,
-		cornerRadius = UDim.new(0,8)
+		cornerRadius = UDim.new(0, 8)
 	},
 	_settings = {
 		duration = 4,
@@ -636,7 +644,9 @@ local NotificationLib = {
 		fadeTime = 0.28,
 		slideDistance = 18
 	},
-	_icons = { info = "rbxassetid://9405926389" }
+	_icons = {
+		info = "rbxassetid://9405926389"
+	}
 }
 
 function NotificationLib:_init()
@@ -650,7 +660,12 @@ function NotificationLib:_init()
 end
 
 function NotificationLib:_calculatePosition(i)
-	return UDim2.new(1, -24, 1, -24 - (i-1)*(90 + self._settings.spacing))
+	return UDim2.new(
+		1,
+		-24,
+		1,
+		-24 - (i - 1) * (90 + self._settings.spacing)
+	)
 end
 
 function NotificationLib:_animateOut(frame)
@@ -658,13 +673,17 @@ function NotificationLib:_animateOut(frame)
 		frame,
 		TweenInfo.new(self._settings.fadeTime, Enum.EasingStyle.Quad),
 		{
-			Position = frame.Position + UDim2.new(0,0,0,self._settings.slideDistance),
+			Position = frame.Position + UDim2.new(0, 0, 0, self._settings.slideDistance),
 			BackgroundTransparency = 1
 		}
 	)
+
 	tween:Play()
+
 	tween.Completed:Connect(function()
-		if frame.Parent then frame:Destroy() end
+		if frame.Parent then
+			frame:Destroy()
+		end
 	end)
 end
 
@@ -673,11 +692,12 @@ function NotificationLib:Notify(opt)
 	opt = opt or {}
 
 	local frame = Instance.new("Frame")
-	frame.Size = UDim2.new(0,340,0,90)
-	frame.AnchorPoint = Vector2.new(1,1)
+	frame.Size = UDim2.new(0, 340, 0, 90)
+	frame.AnchorPoint = Vector2.new(1, 1)
 	frame.Position = self:_calculatePosition(#self._notifications + 1)
 	frame.BackgroundColor3 = self._theme.primaryColor
 	frame.Parent = self._container
+
 	Instance.new("UICorner", frame).CornerRadius = self._theme.cornerRadius
 
 	local title = Instance.new("TextLabel", frame)
@@ -687,8 +707,8 @@ function NotificationLib:Notify(opt)
 	title.TextSize = 16
 	title.TextXAlignment = Enum.TextXAlignment.Left
 	title.BackgroundTransparency = 1
-	title.Size = UDim2.new(1,-60,0,22)
-	title.Position = UDim2.new(0,48,0,10)
+	title.Size = UDim2.new(1, -60, 0, 22)
+	title.Position = UDim2.new(0, 48, 0, 10)
 
 	local msg = Instance.new("TextLabel", frame)
 	msg.Text = opt.Message or ""
@@ -698,39 +718,47 @@ function NotificationLib:Notify(opt)
 	msg.TextWrapped = true
 	msg.TextXAlignment = Enum.TextXAlignment.Left
 	msg.BackgroundTransparency = 1
-	msg.Size = UDim2.new(1,-60,0,48)
-	msg.Position = UDim2.new(0,48,0,30)
+	msg.Size = UDim2.new(1, -60, 0, 48)
+	msg.Position = UDim2.new(0, 48, 0, 30)
 
 	table.insert(self._notifications, frame)
 
 	task.delay(opt.Duration or self._settings.duration, function()
-		self:_animateOut(frame)
+		if frame.Parent then
+			self:_animateOut(frame)
+		end
 	end)
 end
 
-
-
 if not hasGetGenv then
 	warn("[EXPLOIT WARNING] getgenv function not found")
+
 	NotificationLib:Notify({
 		Title = "EXPLOIT WARNING",
-		Message = getMessage("getgenv"),
+		Message = getTranslatedMessage("getgenv"),
 		Duration = 5
 	})
 end
 
 if not httpSuccess then
 	warn("[HTTP WARNING] No supported HTTP request function found")
+
 	NotificationLib:Notify({
 		Title = "HTTP WARNING",
-		Message = getMessage("http"),
+		Message = getTranslatedMessage("http"),
+		Duration = 5
+	})
+
+	NotificationLib:Notify({
+		Title = "REQUEST WARNING",
+		Message = getTranslatedMessage("request"),
 		Duration = 5
 	})
 end
 
-
 _G.MISSING_GETGENV = not hasGetGenv
 _G.MISSING_HTTP = not httpSuccess
+_G.MISSING_REQUEST = not httpSuccess
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -776,7 +804,7 @@ corner.Parent = mainFrame
 local headerFrame = Instance.new("Frame", mainFrame)
 headerFrame.Size = UDim2.new(1, -20, 0, 80) 
 headerFrame.Position = UDim2.new(0, 10, 0, 50)
-headerFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+headerFrame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 headerFrame.BorderSizePixel = 0
 headerFrame.ZIndex = 30
 
@@ -1647,161 +1675,12 @@ local versionLabel = Instance.new("TextLabel", mainFrame)
 versionLabel.Size = UDim2.new(0, 150, 0, 25)
 versionLabel.Position = UDim2.new(0, 10, 0, 8)
 versionLabel.BackgroundTransparency = 1
-versionLabel.Text = "v7.7"
+versionLabel.Text = "v7.8"
 versionLabel.Font = Enum.Font.Ubuntu
 versionLabel.TextSize = 16
 versionLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
 versionLabel.TextXAlignment = Enum.TextXAlignment.Left
 versionLabel.ZIndex = 16
-
---------------------------------------------------------------------------------------------------------------------
-
--- ════════════════════════════════════════
---    (Décoration pour le Nom du Gui)
--- ════════════════════════════════════════
-
-local function GetEasterDate(year)
-	local A = math.floor(year/100)
-	local B = math.floor((13+8*A)/25)
-	local C = (15-B+A-math.floor(A/4))%30
-	local D = (4+A-math.floor(A/4))%7
-	local E = (19*(year%19)+C)%30
-	local F = (2*(year%4)+4*(year%7)+6*E+D)%7
-	local G = 22 + E + F
-
-	if E == 29 and F == 6 then
-		return 4, 19
-	elseif E == 28 and F == 6 then
-		return 4, 18
-	elseif G > 31 then
-		return 4, G-31
-	else
-		return 3, G
-	end
-end
-
-local isXmas, isNewYear, isEaster, isHalloween, isValentine = false, false, false, false, false
-
-local success, err = pcall(function()
-	local date = os.date("*t")
-	local emonth, eday = GetEasterDate(date.year)
-	isXmas = date.month == 12 and date.day >= 15 and date.day <= 29
-	isHalloween = (date.month == 10 and date.day >= 23) or (date.month == 11 and date.day <= 1)
-	isNewYear = (date.month == 12 and date.day >= 30) or (date.month == 1 and date.day <= 2)
-	isValentineDay = (date.month == 2 and date.day == 14)
-	isEaster = (date.month == emonth and date.day == eday)
-end)
-
-if not success then
-	warn("Date system error for writing Server Finder Deluxe:", err)
-end
-
-local function decorateTitle(startEmoji, endEmoji)
-	title.Text = startEmoji .. " Server Finder Deluxe " .. endEmoji
-	title.TextScaled = false
-	title.TextSize = 25
-	title.Position = UDim2.new(0, 0, 0, 2)
-end
-
-
-if isXmas then
-	decorateTitle("🎄", "🎄")
-	local cycleColors = {
-		Color3.fromRGB(0, 255, 0),
-		Color3.fromRGB(255, 0, 0),
-		Color3.fromRGB(255, 255, 255)
-	}
-	local index = 1
-	task.spawn(function()
-		while true do
-			title.TextColor3 = cycleColors[index]
-			versionLabel.TextColor3 = cycleColors[index]
-			index = index % #cycleColors + 1
-			task.wait(0.5)
-		end
-	end)
-end
-
-
-if isHalloween then
-	decorateTitle("🎃", "🎃")
-	local cycleColors = {
-		Color3.fromRGB(0, 0, 0),
-		Color3.fromRGB(255, 165, 0)
-	}
-	local index = 1
-	task.spawn(function()
-		while true do
-			title.TextColor3 = cycleColors[index]
-			versionLabel.TextColor3 = cycleColors[index]
-			index = index % #cycleColors + 1
-			task.wait(0.5)
-		end
-	end)
-end
-
-
-if isNewYear then
-	decorateTitle("🎉", "🎉")
-	local cycleColors = {
-		Color3.fromRGB(255, 255, 0),
-		Color3.fromRGB(0, 0, 0)
-	}
-	local index = 1
-	task.spawn(function()
-		while true do
-			title.TextColor3 = cycleColors[index]
-			versionLabel.TextColor3 = cycleColors[index]
-			index = index % #cycleColors + 1
-			task.wait(0.5)
-		end
-	end)
-end
-
-
-if isEaster then
-	decorateTitle("🐰", "🐰")
-	local cycleColors = {
-		Color3.fromRGB(216, 191, 216),
-		Color3.fromRGB(255, 182, 193),
-		Color3.fromRGB(193, 225, 193),
-		Color3.fromRGB(173, 216, 230)
-	}
-	local index = 1
-	task.spawn(function()
-		while true do
-			title.TextColor3 = cycleColors[index]
-			versionLabel.TextColor3 = cycleColors[index]
-			index = index % #cycleColors + 1
-			task.wait(0.5)
-		end
-	end)
-end
-
-
-if isValentineDay then
-	decorateTitle("💗", "💗")
-	local cycleColors = { 
-		Color3.fromRGB(0, 0, 0),
-		Color3.fromRGB( 255, 85, 127)
-	}
-	local index = 1
-	task.spawn(function()
-		while true do
-			title.TextColor3 = cycleColors[index]
-			versionLabel.TextColor3 = cycleColors[index]
-			index = index % #cycleColors + 1
-			task.wait(0.5)
-		end
-	end)
-end
-
-
-
-if not isXmas and not isHalloween and not isNewYear and not isEaster and not isValentineDay then
-	title.Text = "Server Finder Deluxe"
-	title.Position = UDim2.new(0, 0, 0, 0)
-end
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -1880,13 +1759,6 @@ end
 
 print(GetTotalPlayers(game.PlaceId))
 
-
-pcall(function()
-    local env = getfenv and getfenv(0)
-    if type(env) == "table" and table.freeze and not table.isfrozen(env) then
-        pcall(table.freeze, env)
-    end
-end)
 
 local posChange = 8
 local serverFrames = {}
@@ -2249,7 +2121,7 @@ function updateServerList(servers)
 end
 
 
-function refreshServers()
+function refreshServers(orderBy)
 
 task.spawn(function()
     local success, result = pcall(function()
@@ -2264,7 +2136,7 @@ task.spawn(function()
     end
 end)
 
-    local ok, servers = pcall(GetAllServers, game.PlaceId)
+     local ok, servers = pcall(GetAllServers, game.PlaceId, orderBy)
 
     if typeof(servers) == "table" and #servers > 0 then
         local allServersFlat = {}
@@ -2488,7 +2360,6 @@ local refreshBtn = CreateRefreshButton(mainFrame)
 --     (Button/LowPlayers/MaxPlayers)
 -- ════════════════════════════════════════
 
-
 local function sortServers(servers, currentSort)
 	if typeof(servers) ~= "table" then return {} end
 
@@ -2504,28 +2375,51 @@ local function sortServers(servers, currentSort)
 		table.sort(servers, function(a, b)
 			return (a.ping or 9999) < (b.ping or 9999)
 		end)
+	elseif currentSort == "slowest" then
+		table.sort(servers, function(a, b)
+			return (a.ping or 0) > (b.ping or 0)
+		end)
 	end
 
 	return servers
 end
 
-
-local lowPlayersBtn = Instance.new("ImageButton", mainFrame)
+lowPlayersBtn = Instance.new("TextButton")
+lowPlayersBtn.Parent = mainFrame
 lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-lowPlayersBtn.Size = UDim2.new(0, 40, 0, 40)
-lowPlayersBtn.Position = UDim2.new(0.5, -183, 0.5, -220)
-lowPlayersBtn.Image = "http://www.roblox.com/asset/?id=78395837711238"
-lowPlayersBtn.BackgroundTransparency = 1
+lowPlayersBtn.Size = UDim2.new(0, 65, 0, 30)
+lowPlayersBtn.Position = UDim2.new(0.5, -165, 0.5, -228)
+lowPlayersBtn.Text = "Ping ↑"
+lowPlayersBtn.Font = Enum.Font.GothamBold
+lowPlayersBtn.TextSize = 14
+lowPlayersBtn.TextColor3 = Color3.fromRGB(255,255,255)
+lowPlayersBtn.BackgroundColor3 = Color3.fromRGB(45,45,45)
+lowPlayersBtn.BorderSizePixel = 1
+lowPlayersBtn.BorderColor3 = Color3.fromRGB(0,0,0)
 lowPlayersBtn.ZIndex = 12
 
-local maxPlayersBtn = Instance.new("ImageButton", mainFrame)
+lowCorner = Instance.new("UICorner")
+lowCorner.Parent = lowPlayersBtn
+lowCorner.CornerRadius = UDim.new(0,8)
+
+
+maxPlayersBtn = Instance.new("TextButton")
+maxPlayersBtn.Parent = mainFrame
 maxPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-maxPlayersBtn.Size = UDim2.new(0, 40, 0, 40)
-maxPlayersBtn.Position = UDim2.new(0.5, -264, 0.5, -220)
-maxPlayersBtn.Image = "http://www.roblox.com/asset/?id=117409611207958"
-maxPlayersBtn.BackgroundTransparency = 1
+maxPlayersBtn.Size = UDim2.new(0, 65, 0, 30)
+maxPlayersBtn.Position = UDim2.new(0.5, -235, 0.5, -228)
+maxPlayersBtn.Text = "Ping ↓"
+maxPlayersBtn.Font = Enum.Font.GothamBold
+maxPlayersBtn.TextSize = 14
+maxPlayersBtn.TextColor3 = Color3.fromRGB(255,255,255)
+maxPlayersBtn.BackgroundColor3 = Color3.fromRGB(45,45,45)
+maxPlayersBtn.BorderSizePixel = 1
+maxPlayersBtn.BorderColor3 = Color3.fromRGB(0,0,0)
 maxPlayersBtn.ZIndex = 12
 
+maxCorner = Instance.new("UICorner")
+maxCorner.Parent = maxPlayersBtn
+maxCorner.CornerRadius = UDim.new(0,8)
 
 local clickSoundLow = Instance.new("Sound", lowPlayersBtn)
 clickSoundLow.SoundId = "rbxassetid://9120093264"
@@ -2571,6 +2465,7 @@ maxPlayersBtn.MouseButton1Click:Connect(function()
 		warn("API error during MaxPlayers. Please try again.", err)
 	end
 end)
+
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -2761,7 +2656,7 @@ closeBtn.ZIndex = 6
 local clickSoundClose = Instance.new("Sound")
 clickSoundClose.SoundId = "rbxassetid://9120093264"
 clickSoundClose.Volume = 1
-clickSoundClose.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui") -- Mettre le son dans PlayerGui
+clickSoundClose.Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui") 
 
 closeBtn.MouseButton1Click:Connect(function()
 	local soundOk, soundErr = pcall(function()
@@ -3051,14 +2946,14 @@ local function toggleGuiSize()
 
         if lowPlayersBtn then
             lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-            lowPlayersBtn.Size = UDim2.new(0, 40, 0, 40)
-            lowPlayersBtn.Position = UDim2.new(0.5, -183, 0.5, -220)
+            lowPlayersBtn.Size = UDim2.new(0, 65, 0, 30)
+            lowPlayersBtn.Position = UDim2.new(0.5, -165, 0.5, -228)
         end
 
         if maxPlayersBtn then
             maxPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-            maxPlayersBtn.Size = UDim2.new(0, 40, 0, 40)
-            maxPlayersBtn.Position = UDim2.new(0.5, -264, 0.5, -220)
+            maxPlayersBtn.Size = UDim2.new(0, 65, 0, 30)
+            maxPlayersBtn.Position = UDim2.new(0.5, -235, 0.5, -228)
         end
 
         if CopyGamelive then
@@ -3096,16 +2991,16 @@ local function toggleGuiSize()
             RejoinButton.Position = UDim2.new(0.5, 195, 0.5, -175)
         end
 
-        if maxPlayersBtn then
+       if  maxPlayersBtn then
             maxPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-            maxPlayersBtn.Size = UDim2.new(0, 25, 0, 25)
-            maxPlayersBtn.Position = UDim2.new(0.5, -222, 0.5, -175)
+            maxPlayersBtn.Size = UDim2.new(0, 52, 0, 26)
+            maxPlayersBtn.Position = UDim2.new(0.5, -223, 0.5, -175)
         end
 
-        if lowPlayersBtn then
-            lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-            lowPlayersBtn.Size = UDim2.new(0, 25, 0, 25)
-            lowPlayersBtn.Position = UDim2.new(0.5, -173, 0.5, -175)
+      if  lowPlayersBtn then
+           lowPlayersBtn.AnchorPoint = Vector2.new(0.5, 0.5)
+           lowPlayersBtn.Size = UDim2.new(0, 52, 0, 26)
+           lowPlayersBtn.Position = UDim2.new(0.5, -248, 0.5, -175)
         end
 
         if CopyGamelive then
@@ -3125,63 +3020,6 @@ local function toggleGuiSize()
 end
 
 resizeButton.MouseButton1Click:Connect(toggleGuiSize)
-
---------------------------------------------------------------------------------------------------------------------
-
--- ════════════════════════════════════════
---    (Services MODE PERFORMANCE BOOST)
--- ════════════════════════════════════════
-
-local Players = game:GetService("Players")
-local Lighting = game:GetService("Lighting")
-
-
-local UserSettings = settings():GetService("RenderSettings")
-local originalSettings = {
-	QualityLevel = UserSettings.QualityLevel,
-	EditQualityLevel = UserSettings.EditQualityLevel,
-	GlobalShadows = Lighting.GlobalShadows
-}
-
-
-local function EnablePerformanceBoost()
-	UserSettings.QualityLevel = Enum.QualityLevel.Level01
-	UserSettings.EditQualityLevel = Enum.QualityLevel.Level01
-
-	
-	for _, effect in pairs(Lighting:GetChildren()) do
-		if effect:IsA("PostEffect") then
-			effect.Enabled = false
-		end
-	end
-
-	
-	Lighting.GlobalShadows = false
-end
-
-
-local function DisablePerformanceBoost()
-	UserSettings.QualityLevel = originalSettings.QualityLevel
-	UserSettings.EditQualityLevel = originalSettings.EditQualityLevel
-
-	for _, effect in pairs(Lighting:GetChildren()) do
-		if effect:IsA("PostEffect") then
-			effect.Enabled = true
-		end
-	end
-
-	Lighting.GlobalShadows = originalSettings.GlobalShadows
-end
-
-
-EnablePerformanceBoost()
-
-
-closeBtn.MouseButton1Click:Connect(function()
-	DisablePerformanceBoost()
-	screenGui.Enabled = false
-end)
-
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -3226,7 +3064,7 @@ Modules.print = function(color, text, size)
 	print(Text)
 end
 
-local version = "7.7"
+local version = "7.8"
 
 local translations = {
 	["fr"] = {
