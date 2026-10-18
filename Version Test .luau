@@ -91,25 +91,6 @@ versionLabel.Font = Enum.Font.GothamMedium
 versionLabel.TextSize = 16
 versionLabel.TextColor3 = Color3.fromRGB(210, 210, 210)
 versionLabel.Text = "Ultimate Server Scanner"
-versionLabel.TextXAlignment = Enum.TextXAlignment.Center
-
-local versionContainer = Instance.new("Frame")
-versionContainer.Parent = main
-versionContainer.BackgroundTransparency = 1
-versionContainer.Size = UDim2.new(1, 0, 0, 20)
-versionContainer.Position = UDim2.new(0, 0, 0, 70)
-
-local versionLabel = Instance.new("TextLabel")
-versionLabel.Parent = versionContainer
-versionLabel.BackgroundTransparency = 1
-versionLabel.AutomaticSize = Enum.AutomaticSize.X
-versionLabel.Size = UDim2.new(0, 0, 1, 0)
-versionLabel.Position = UDim2.new(0.5, 0, 0, 0)
-versionLabel.AnchorPoint = Vector2.new(0.5, 0)
-versionLabel.Font = Enum.Font.GothamMedium
-versionLabel.TextSize = 16
-versionLabel.TextColor3 = Color3.fromRGB(210, 210, 210)
-versionLabel.Text = "Ultimate Server Scanner"
 
 local status = Instance.new("TextLabel")
 status.Parent = main
@@ -389,6 +370,7 @@ if gui then
     gui:Destroy()
 end
 
+
 --------------------------------------------------------------------------------------------------------------------
 
 if _G.SFD_LOADED and not _G.SFD_CAN_RELOAD then
@@ -501,9 +483,9 @@ local function HttpGet(url)
     return nil, nil
 end
 
--- ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+-- ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 -- (Service File / Détection combatibilité des appareilles disponible pour exercution du script / Caméra / Service Téléport) 
--- ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+-- ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 writefile = writefile or getgenv().writefile
 makefolder = makefolder or getgenv().makefolder
@@ -564,9 +546,9 @@ local httprequest = (syn and syn.request) or (http and http.request) or http_req
 
 --------------------------------------------------------------------------------------------------------------------
 
--- ══════════════════════════════════════════════════
+-- ══════════════════════════════════════════════════════════
 --   (Détection HTTP Function / Détection GetGenv / Request) 
--- ══════════════════════════════════════════════════
+-- ══════════════════════════════════════════════════════════
 
 local hasGetGenv = false
 
@@ -794,7 +776,7 @@ _G.MISSING_REQUEST = not httpSuccess
 --------------------------------------------------------------------------------------------------------------------
 
 -- ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
---   (Protection Gui /Main Frame/Protection Logo / Détection Mouse and Touch /Resize Gui)
+--   (Protection Gui /Main Frame/Protection Logo / Détection Mouse and Touch /Resize Gui / headerFrame)
 -- ════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 
 local screenGui = Instance.new("ScreenGui", game:GetService("CoreGui"))
@@ -954,9 +936,9 @@ end)
 
 --------------------------------------------------------------------------------------------------------------------
 
--- ════════════════════════════════════════
+-- ════════════════════════════════════════════════════
 -- (Logo Server Finder Deluxe / plus Events April Day) 
--- ════════════════════════════════════════
+-- ════════════════════════════════════════════════════
 local TweenService = game:GetService("TweenService")
 
 local dir = "Server Finder Deluxe"
@@ -1100,9 +1082,9 @@ task.defer(loadLogo)
 
 --------------------------------------------------------------------------------------------------------------------
 
--- ════════════════════════════════════════
+-- ═════════════════════════════════════════
 --   (Message de bienvenu / plus décoration) 
--- ════════════════════════════════════════
+-- ═════════════════════════════════════════
 
 local function GetEasterDate(year)
 	local A = math.floor(year/100)
@@ -1775,13 +1757,13 @@ headerFrame.Visible = true
 
 --------------------------------------------------------------------------------------------------------------------
 
--- ════════════════════════════════════════════
+-- ═══════════════════════════════════════════════
 -- (Le code qui scann tout les servers publics)
--- ════════════════════════════════════════════
+-- ═══════════════════════════════════════════════
 
--- ════════════════════════════════════════════
+-- ═══════════════════════════════════════════════
 -- (Récupération des nombres de joueurs (API v1))
--- ════════════════════════════════════════════
+-- ═══════════════════════════════════════════════
 
 local function GetTotalPlayers(placeId)
     local total = "N/A"
@@ -1811,9 +1793,9 @@ print(GetTotalPlayers(game.PlaceId))
 local posChange = 8
 local serverFrames = {}
 
--- ════════════════════════════════════════
---   Récupération des Serveurs (API v1)
--- ════════════════════════════════════════
+-- ════════════════════════════════════════════════════
+--   (Récupération des Serveurs (API v1) / BestLacency)
+-- ════════════════════════════════════════════════════
 
 local function GetAllServers(PlaceID, orderBy)
     getgenv().NextServer = nil
@@ -1868,9 +1850,9 @@ local function GetAllServers(PlaceID, orderBy)
 end
 --------------------------------------------------------------------------------------------------------------------
 
--- ════════════════════════════════════════
---   (Players/PING/FPS/ID/Server Quality/Heure)
--- ════════════════════════════════════════
+-- ═════════════════════════════════════════════════════════════════
+--   (Players/PING/FPS/ID/Server-Quality/Heure /Total Players)
+-- ═════════════════════════════════════════════════════════════════
 
  
 local function formatTime()
