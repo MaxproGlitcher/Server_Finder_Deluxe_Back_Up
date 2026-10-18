@@ -91,34 +91,19 @@ versionLabel.Font = Enum.Font.GothamMedium
 versionLabel.TextSize = 16
 versionLabel.TextColor3 = Color3.fromRGB(210, 210, 210)
 versionLabel.Text = "Ultimate Server Scanner"
+versionLabel.TextXAlignment = Enum.TextXAlignment.Center
 
 pcall(function()
     local dotsLabel = Instance.new("TextLabel")
     dotsLabel.Parent = main
     dotsLabel.BackgroundTransparency = 1
     dotsLabel.Size = UDim2.new(0, 35, 0, 20)
-    dotsLabel.Position = UDim2.new(0.5, 75, 0, 35)
+    dotsLabel.Position = UDim2.new(0.5, versionLabel.TextBounds.X / 2 + 2, 0, 70)
     dotsLabel.Font = Enum.Font.GothamBold
     dotsLabel.TextSize = 16
     dotsLabel.TextColor3 = Color3.fromRGB(210, 210, 210)
     dotsLabel.TextXAlignment = Enum.TextXAlignment.Left
     dotsLabel.Text = ""
-
-    task.spawn(function()
-        while gui and gui.Parent and dotsLabel and dotsLabel.Parent do
-            local success, err = pcall(function()
-                local dots = {"", ".", "..", "..."}
-                dotsLabel.Text = dots[math.random(1, #dots)]
-            end)
-
-            if not success then
-                warn("Ultimate Server Scanner animation error: " .. tostring(err))
-                break
-            end
-
-            task.wait(0.35)
-        end
-    end)
 end)
 
 local status = Instance.new("TextLabel")
