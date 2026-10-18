@@ -97,7 +97,7 @@ pcall(function()
     dotsLabel.Parent = main
     dotsLabel.BackgroundTransparency = 1
     dotsLabel.Size = UDim2.new(0, 35, 0, 20)
-    dotsLabel.Position = UDim2.new(0.5, 75, 0, 55)
+    dotsLabel.Position = UDim2.new(0.5, 75, 0, 35)
     dotsLabel.Font = Enum.Font.GothamBold
     dotsLabel.TextSize = 16
     dotsLabel.TextColor3 = Color3.fromRGB(210, 210, 210)
