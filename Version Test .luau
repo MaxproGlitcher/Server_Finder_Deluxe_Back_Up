@@ -1719,7 +1719,7 @@ versionLabel = Instance.new("TextLabel", mainFrame)
 versionLabel.Size = UDim2.new(0, 150, 0, 25)
 versionLabel.Position = UDim2.new(0, 10, 0, 8)
 versionLabel.BackgroundTransparency = 1
-versionLabel.Text = "v8.0"
+versionLabel.Text = "v8.1"
 versionLabel.Font = Enum.Font.Ubuntu
 versionLabel.TextSize = 16
 versionLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -2927,7 +2927,7 @@ Modules.print = function(color, text, size)
 	print(Text)
 end
 
-local version = "8.0"
+local version = "8.1"
 
 local translations = {
 	["fr"] = {
