@@ -99,18 +99,6 @@ versionContainer.BackgroundTransparency = 1
 versionContainer.Size = UDim2.new(1, 0, 0, 20)
 versionContainer.Position = UDim2.new(0, 0, 0, 70)
 
-local versionLabel = Instance.new("TextLabel")
-versionLabel.Parent = versionContainer
-versionLabel.BackgroundTransparency = 1
-versionLabel.AutomaticSize = Enum.AutomaticSize.X
-versionLabel.Size = UDim2.new(0, 0, 1, 0)
-versionLabel.Position = UDim2.new(0.5, 0, 0, 0)
-versionLabel.AnchorPoint = Vector2.new(0.5, 0)
-versionLabel.Font = Enum.Font.GothamMedium
-versionLabel.TextSize = 16
-versionLabel.TextColor3 = Color3.fromRGB(210, 210, 210)
-versionLabel.Text = "Ultimate Server Scanner"
-
 local dotsLabel = Instance.new("TextLabel")
 dotsLabel.Parent = versionContainer
 dotsLabel.BackgroundTransparency = 1
