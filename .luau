@@ -91,6 +91,54 @@ versionLabel.Font = Enum.Font.GothamMedium
 versionLabel.TextSize = 16
 versionLabel.TextColor3 = Color3.fromRGB(210, 210, 210)
 versionLabel.Text = "Ultimate Server Scanner"
+versionLabel.TextXAlignment = Enum.TextXAlignment.Center
+
+local versionContainer = Instance.new("Frame")
+versionContainer.Parent = main
+versionContainer.BackgroundTransparency = 1
+versionContainer.Size = UDim2.new(1, 0, 0, 20)
+versionContainer.Position = UDim2.new(0, 0, 0, 70)
+
+local versionLabel = Instance.new("TextLabel")
+versionLabel.Parent = versionContainer
+versionLabel.BackgroundTransparency = 1
+versionLabel.AutomaticSize = Enum.AutomaticSize.X
+versionLabel.Size = UDim2.new(0, 0, 1, 0)
+versionLabel.Position = UDim2.new(0.5, 0, 0, 0)
+versionLabel.AnchorPoint = Vector2.new(0.5, 0)
+versionLabel.Font = Enum.Font.GothamMedium
+versionLabel.TextSize = 16
+versionLabel.TextColor3 = Color3.fromRGB(210, 210, 210)
+versionLabel.Text = "Ultimate Server Scanner"
+
+local dotsLabel = Instance.new("TextLabel")
+dotsLabel.Parent = versionContainer
+dotsLabel.BackgroundTransparency = 1
+dotsLabel.Size = UDim2.new(0, 35, 1, 0)
+dotsLabel.Position = UDim2.new(0.5, versionLabel.TextBounds.X / 2 + 2, 0, 0)
+dotsLabel.Font = Enum.Font.GothamBold
+dotsLabel.TextSize = 16
+dotsLabel.TextColor3 = Color3.fromRGB(210, 210, 210)
+dotsLabel.TextXAlignment = Enum.TextXAlignment.Left
+dotsLabel.Text = ""
+
+task.spawn(function()
+    while gui.Parent and dotsLabel.Parent do
+        local success, err = xpcall(function()
+            local dots = {"", ".", "..", "..."}
+            dotsLabel.Text = dots[math.random(1, #dots)]
+        end, function(e)
+            return tostring(e)
+        end)
+
+        if not success then
+            warn("Ultimate Server Scanner animation error: " .. err)
+            break
+        end
+
+        task.wait(0.35)
+    end
+end)
 
 local status = Instance.new("TextLabel")
 status.Parent = main
@@ -548,9 +596,6 @@ local httprequest = (syn and syn.request) or (http and http.request) or http_req
 -- ══════════════════════════════════════════════════
 --   (Détection HTTP Function / Détection GetGenv / Request) 
 -- ══════════════════════════════════════════════════
-
-local LocalizationService = game:GetService("LocalizationService")
-local TweenService = game:GetService("TweenService")
 
 local hasGetGenv = false
 
@@ -1088,11 +1133,6 @@ task.defer(loadLogo)
 --   (Message de bienvenu / plus décoration) 
 -- ════════════════════════════════════════
 
-local TweenService = game:GetService("TweenService")
-local LocalizationService = game:GetService("LocalizationService")
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
 local function GetEasterDate(year)
 	local A = math.floor(year/100)
 	local B = math.floor((13+8*A)/25)
@@ -1357,11 +1397,6 @@ task.wait(6)
 --         (IdentifyExecutor)
 -- ════════════════════════════════════════
 
-local TweenService = game:GetService("TweenService")
-local LocalizationService = game:GetService("LocalizationService")
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
 local NotificationLib = {
 	_notifications = {},
 	_theme = {
@@ -1485,13 +1520,6 @@ end)
 -- ════════════════════════════════════════
 --         (Tracker Game)
 -- ════════════════════════════════════════
-
-local TweenService = game:GetService("TweenService")
-local TeleportService = game:GetService("TeleportService")
-local Players = game:GetService("Players")
-local LocalizationService = game:GetService("LocalizationService")
-local LocalPlayer = Players.LocalPlayer
-
 
 local langText = {
 	["fr"] = "Tracker Game 📡 : ",
@@ -1691,7 +1719,7 @@ versionLabel = Instance.new("TextLabel", mainFrame)
 versionLabel.Size = UDim2.new(0, 150, 0, 25)
 versionLabel.Position = UDim2.new(0, 10, 0, 8)
 versionLabel.BackgroundTransparency = 1
-versionLabel.Text = "v8.0"
+versionLabel.Text = "v8.1"
 versionLabel.Font = Enum.Font.Ubuntu
 versionLabel.TextSize = 16
 versionLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -2215,12 +2243,6 @@ end)
 --           (Button/Refresh)
 -- ════════════════════════════════════════
 
-local TweenService = game:GetService("TweenService")
-local LocalizationService = game:GetService("LocalizationService")
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
-
 local langText = {
 	["fr"] = "Erreur de chargement. Réessaie.",
 	["en"] = "Error loading. Please try again.",
@@ -2538,13 +2560,6 @@ end)
 -- ════════════════════════════════════════
 --         (Button/Rejoin)
 -- ════════════════════════════════════════
-
-local TweenService = game:GetService("TweenService")
-local TeleportService = game:GetService("TeleportService")
-local Players = game:GetService("Players")
-local LocalizationService = game:GetService("LocalizationService")
-local LocalPlayer = Players.LocalPlayer
-
 
 local langText = {
 	["fr"] = "Reconnexion au serveur...",
@@ -2912,7 +2927,7 @@ Modules.print = function(color, text, size)
 	print(Text)
 end
 
-local version = "8.0"
+local version = "8.1"
 
 local translations = {
 	["fr"] = {
