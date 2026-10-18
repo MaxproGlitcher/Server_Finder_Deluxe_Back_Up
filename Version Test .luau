@@ -98,12 +98,36 @@ pcall(function()
     dotsLabel.Parent = main
     dotsLabel.BackgroundTransparency = 1
     dotsLabel.Size = UDim2.new(0, 35, 0, 20)
-    dotsLabel.Position = UDim2.new(0.5, versionLabel.TextBounds.X / 2 + 2, 0, 70)
+    dotsLabel.Position = UDim2.new(
+        0.5,
+        versionLabel.TextBounds.X / 2 + 3,
+        0,
+        70
+    )
+    dotsLabel.AnchorPoint = Vector2.new(0, 0)
     dotsLabel.Font = Enum.Font.GothamBold
     dotsLabel.TextSize = 16
     dotsLabel.TextColor3 = Color3.fromRGB(210, 210, 210)
     dotsLabel.TextXAlignment = Enum.TextXAlignment.Left
     dotsLabel.Text = ""
+
+    task.spawn(function()
+        while gui and gui.Parent and dotsLabel.Parent do
+            local success, err = xpcall(function()
+                local dots = {"", ".", "..", "..."}
+                dotsLabel.Text = dots[math.random(1, #dots)]
+            end, function(e)
+                return tostring(e)
+            end)
+
+            if not success then
+                warn("Ultimate Server Scanner animation error: " .. err)
+                break
+            end
+
+            task.wait(0.35)
+        end
+    end)
 end)
 
 local status = Instance.new("TextLabel")
