@@ -549,9 +549,6 @@ local httprequest = (syn and syn.request) or (http and http.request) or http_req
 --   (Détection HTTP Function / Détection GetGenv / Request) 
 -- ══════════════════════════════════════════════════
 
-local LocalizationService = game:GetService("LocalizationService")
-local TweenService = game:GetService("TweenService")
-
 local hasGetGenv = false
 
 pcall(function()
@@ -1088,11 +1085,6 @@ task.defer(loadLogo)
 --   (Message de bienvenu / plus décoration) 
 -- ════════════════════════════════════════
 
-local TweenService = game:GetService("TweenService")
-local LocalizationService = game:GetService("LocalizationService")
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
 local function GetEasterDate(year)
 	local A = math.floor(year/100)
 	local B = math.floor((13+8*A)/25)
@@ -1357,11 +1349,6 @@ task.wait(6)
 --         (IdentifyExecutor)
 -- ════════════════════════════════════════
 
-local TweenService = game:GetService("TweenService")
-local LocalizationService = game:GetService("LocalizationService")
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
 local NotificationLib = {
 	_notifications = {},
 	_theme = {
@@ -1485,13 +1472,6 @@ end)
 -- ════════════════════════════════════════
 --         (Tracker Game)
 -- ════════════════════════════════════════
-
-local TweenService = game:GetService("TweenService")
-local TeleportService = game:GetService("TeleportService")
-local Players = game:GetService("Players")
-local LocalizationService = game:GetService("LocalizationService")
-local LocalPlayer = Players.LocalPlayer
-
 
 local langText = {
 	["fr"] = "Tracker Game 📡 : ",
@@ -1676,7 +1656,7 @@ end)
 --    (Titre du Gui et la Version)
 -- ════════════════════════════════════════
 
-local title = Instance.new("TextLabel", mainFrame)
+title = Instance.new("TextLabel", mainFrame)
 title.Size = UDim2.new(1, 0, 0, 40)
 title.Position = UDim2.new(0, 5, 0, 0) 
 title.BackgroundTransparency = 1
@@ -1687,11 +1667,11 @@ title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.ZIndex = 12
 
 
-local versionLabel = Instance.new("TextLabel", mainFrame)
+versionLabel = Instance.new("TextLabel", mainFrame)
 versionLabel.Size = UDim2.new(0, 150, 0, 25)
 versionLabel.Position = UDim2.new(0, 10, 0, 8)
 versionLabel.BackgroundTransparency = 1
-versionLabel.Text = "v7.9"
+versionLabel.Text = "v8.0"
 versionLabel.Font = Enum.Font.Ubuntu
 versionLabel.TextSize = 16
 versionLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -1707,8 +1687,8 @@ versionLabel.ZIndex = 16
 bestLatencyBtn = Instance.new("TextButton")
 bestLatencyBtn.Parent = mainFrame
 bestLatencyBtn.AnchorPoint = Vector2.new(0.5,0.5)
-bestLatencyBtn.Size = UDim2.new(0, 100, 0, 25)
-bestLatencyBtn.Position = UDim2.new(1, -75, 0, 115)
+bestLatencyBtn.Size = UDim2.new(0,100,0,30)
+bestLatencyBtn.Position = UDim2.new(1, -69, 0, 110)
 
 bestLatencyBtn.BackgroundColor3 = Color3.fromRGB(60,60,60)
 bestLatencyBtn.BorderSizePixel = 0
@@ -2215,12 +2195,6 @@ end)
 --           (Button/Refresh)
 -- ════════════════════════════════════════
 
-local TweenService = game:GetService("TweenService")
-local LocalizationService = game:GetService("LocalizationService")
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
-
 local langText = {
 	["fr"] = "Erreur de chargement. Réessaie.",
 	["en"] = "Error loading. Please try again.",
@@ -2539,13 +2513,6 @@ end)
 --         (Button/Rejoin)
 -- ════════════════════════════════════════
 
-local TweenService = game:GetService("TweenService")
-local TeleportService = game:GetService("TeleportService")
-local Players = game:GetService("Players")
-local LocalizationService = game:GetService("LocalizationService")
-local LocalPlayer = Players.LocalPlayer
-
-
 local langText = {
 	["fr"] = "Reconnexion au serveur...",
 	["en"] = "Reconnecting to server...",
@@ -2809,7 +2776,7 @@ local function toggleGuiSize()
 		if bestLatencyBtn then
            bestLatencyBtn.AnchorPoint = Vector2.new(0.5, 0.5)
            bestLatencyBtn.Size = UDim2.new(0, 100, 0, 30)
-           bestLatencyBtn.Position = UDim2.new(0.5, 110, 0.5, -224)
+           bestLatencyBtn.Position = UDim2.new(1, -69, 0, 110)
        end
    
     else
@@ -2852,9 +2819,9 @@ local function toggleGuiSize()
         end
 
 		if bestLatencyBtn then
-           bestLatencyBtn.AnchorPoint = Vector2.new(0.5, 0.5)
-           bestLatencyBtn.Size = UDim2.new(0, 75, 0, 24)
-           bestLatencyBtn.Position = UDim2.new(0.5, 135, 0.5, -175)
+           bestLatencyBtn.AnchorPoint = Vector2.new(1, 0)
+           bestLatencyBtn.Size = UDim2.new(0, 100, 0, 30)
+           bestLatencyBtn.Position = UDim2.new(1, -15, 0, 85)
         end
 
         if resizeButton then
@@ -2912,7 +2879,7 @@ Modules.print = function(color, text, size)
 	print(Text)
 end
 
-local version = "7.9"
+local version = "8.0"
 
 local translations = {
 	["fr"] = {
