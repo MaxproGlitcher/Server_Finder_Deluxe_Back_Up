@@ -1009,7 +1009,7 @@ local function getSeason()
     if (month == 10 and day >= 23)
         or (month == 11 and day == 1) then
         return "Halloween"
-    elseif month == 12 and day >= 15 and day <= 29 then
+    elseif month == 10 and day >= 23 and day <= 29 then
         return "Christmas"
     elseif (month == 12 and day >= 30)
         or (month == 1 and day <= 2) then
