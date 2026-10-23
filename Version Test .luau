@@ -941,17 +941,52 @@ end)
 -- ════════════════════════════════════════════════════
 local TweenService = game:GetService("TweenService")
 
-local dir = "Server Finder Deluxe"
-local file = dir.."/sfd_logo.png"
-local link = "https://github.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/blob/488db584b0491794ae10b06dfe2151004afc970d/Logo%20m%C3%A9tallique%20de%20Server%20Finder%20Deluxe.png"
 
-if not isfolder(dir) then
-	makefolder(dir)
+local TweenService = game:GetService("TweenService")
+
+local dir = "Server Finder Deluxe"
+local baseURL = "https://github.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/blob/488db584b0491794ae10b06dfe2151004afc970d/Logo%20m%C3%A9tallique%20de%20Server%20Finder%20Deluxe.png"
+
+local function safeCall(label, callback)
+    local ok, result = xpcall(callback, function(err)
+        return tostring(err)
+    end)
+
+    if not ok then
+        warn("[SFD Logo] " .. label .. ": " .. tostring(result))
+        return nil
+    end
+
+    return result
 end
+
+safeCall("Folder setup", function()
+    if not isfolder(dir) then
+        makefolder(dir)
+    end
+end)
+
+local logos = {
+    Normal = {
+        file = dir .. "/sfd_logo.png",
+        url = baseURL .. "https://github.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/blob/488db584b0491794ae10b06dfe2151004afc970d/Logo%20m%C3%A9tallique%20de%20Server%20Finder%20Deluxe.png"
+    },
+    Halloween = {
+        file = dir .. "/sfd_halloween.png",
+        url = baseURL .. "sfd_halloween.png"
+    },
+    Christmas = {
+        file = dir .. "/sfd_christmas.png",
+        url = baseURL .. "https://github.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/blob/2c7a321302a9d48e6b455b8dae6f45334c403baf/Logo%20de%20No%C3%ABl%20Server%20Finder%20Deluxe.png"
+    },
+    NewYear = {
+        file = dir .. "/sfd_nouvel_an.png",
+        url = baseURL .. "sfd_nouvel_an.png"
+    }
+}
 
 local logo = Instance.new("ImageLabel")
 logo.Name = "_SFD_Logo_"
-
 logo.Parent = mainFrame
 logo.Size = UDim2.new(0.8, 0, 0.8, 0)
 logo.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -960,125 +995,163 @@ logo.BackgroundTransparency = 1
 logo.ImageTransparency = 0.88
 logo.ScaleType = Enum.ScaleType.Fit
 logo.ZIndex = 20
-
-
-local TweenService = game:GetService("TweenService")
+logo.Visible = false
 
 local function isAprilFools()
-	local d = os.date("*t")
-	return d.day == 1 and d.month == 4
+    local d = os.date("*t")
+    return d.day == 1 and d.month == 4
 end
 
+local function getSeason()
+    local d = os.date("*t")
+    local month, day = d.month, d.day
 
-local function spinLogo()
-	while logo and logo.Parent do
-		local tween = TweenService:Create(
-			logo,
-			TweenInfo.new(2, Enum.EasingStyle.Linear),
-			{Rotation = logo.Rotation + 360}
-		)
-		tween:Play()
-		tween.Completed:Wait()
-	end
+    if (month == 10 and day >= 23)
+        or (month == 11 and day == 1) then
+        return "Halloween"
+    elseif month == 12 and day >= 15 and day <= 29 then
+        return "Christmas"
+    elseif (month == 12 and day >= 30)
+        or (month == 1 and day <= 2) then
+        return "NewYear"
+    end
+
+    return "Normal"
 end
-
 
 local function isValidAsset(asset)
-	if not asset or asset == "" then
-		return false
-	end
-	return string.find(asset, "rbxasset") ~= nil
+    return type(asset) == "string"
+        and asset ~= ""
+        and string.find(asset, "rbxasset") ~= nil
 end
 
+local function downloadLogo(entry)
+    return safeCall("Download " .. entry.file, function()
+        if isfile(entry.file) then
+            return true
+        end
 
-local function downloadLogo()
-	local ok, data = pcall(function()
-		return game:HttpGet(link)
-	end)
+        if not isfolder(dir) then
+            makefolder(dir)
+        end
 
-	if ok and data then
-		if not isfolder(dir) then
-			makefolder(dir)
-		end
-		writefile(file, data)
-	end
+        local response = request({
+            Url = entry.url,
+            Method = "GET"
+        })
+
+        assert(response and response.StatusCode == 200,
+            "HTTP download failed")
+
+        assert(type(response.Body) == "string"
+            and #response.Body > 0, "Empty image")
+
+        writefile(entry.file, response.Body)
+        return true
+    end) == true
 end
 
+local function getLogoAsset(entry)
+    return safeCall("Load " .. entry.file, function()
+        if not isfile(entry.file) then
+            if not downloadLogo(entry) then
+                return nil
+            end
+        end
 
-local function getLogoAsset()
-	if not isfile(file) then
-		downloadLogo()
-		task.wait(0.3)
-	end
+        local asset = getcustomasset(entry.file)
 
-	local success, asset = pcall(function()
-		return getcustomasset(file)
-	end)
+        if isValidAsset(asset) then
+            return asset
+        end
 
-	if not success or not isValidAsset(asset) then
-		warn("Logo invalide → re-download")
-
-		if isfolder(dir) then
-			delfolder(dir)
-			task.wait()
-		end
-		makefolder(dir)
-
-		downloadLogo()
-		task.wait(0.3)
-
-		local retry, newAsset = pcall(function()
-			return getcustomasset(file)
-		end)
-
-		if retry and isValidAsset(newAsset) then
-			return newAsset
-		end
-
-		return nil
-	end
-
-	return asset
+        warn("[SFD Logo] Invalid asset: " .. entry.file)
+        return nil
+    end)
 end
 
+local currentSeason
+local spinning = false
+
+local function spinLogo()
+    if spinning then
+        return
+    end
+
+    spinning = true
+
+    task.spawn(function()
+        safeCall("April Fools animation", function()
+            while logo.Parent and mainFrame.Parent and isAprilFools() do
+                local tween = TweenService:Create(
+                    logo,
+                    TweenInfo.new(2, Enum.EasingStyle.Linear),
+                    { Rotation = logo.Rotation + 360 }
+                )
+
+                tween:Play()
+                tween.Completed:Wait()
+            end
+        end)
+
+        spinning = false
+    end)
+end
 
 local function loadLogo()
-	local myAsset = getLogoAsset()
-	if not myAsset then return end
+    if not mainFrame or not mainFrame.Parent then
+        return
+    end
 
-	logo.Image = myAsset
-	logo.Visible = true
+    local season = getSeason()
+    local entry = logos[season]
+    local asset = getLogoAsset(entry)
 
-	
-	if isAprilFools() then
-		task.spawn(spinLogo)
-	end
+    if not asset and season ~= "Normal" then
+        asset = getLogoAsset(logos.Normal)
+    end
 
-	
-	task.spawn(function()
-		while task.wait(0.5) do
-			if not mainFrame or not mainFrame.Parent then break end
+    if not asset then
+        warn("[SFD Logo] Unable to load logo.")
+        return
+    end
 
-			if not logo.Image or logo.Image == "" then
-				local newAsset = getLogoAsset()
-				if newAsset then
-					logo.Image = newAsset
-				end
-			end
+    if currentSeason ~= season or logo.Image == "" then
+        logo.Image = asset
+        currentSeason = season
+    end
 
-			logo.Visible = true
-			logo.ZIndex = 20
+    logo.Visible = true
+    logo.ZIndex = 20
 
-			if not isAprilFools() then
-				logo.ImageTransparency = 0.88
-				logo.Position = UDim2.new(0.5, 0, 0.5, 0)
-				logo.Rotation = 0
-			end
-		end
-	end)
+    if isAprilFools() then
+        spinLogo()
+    else
+        logo.Rotation = 0
+        logo.ImageTransparency = 0.88
+        logo.Position = UDim2.new(0.5, 0, 0.5, 0)
+    end
 end
 
-task.defer(loadLogo)
+task.defer(function()
+    safeCall("Initial load", loadLogo)
+end)
+
+task.spawn(function()
+    local lastSeason
+
+    while mainFrame and mainFrame.Parent do
+        local season = safeCall("Date detection", getSeason)
+
+        if season and season ~= lastSeason then
+            lastSeason = season
+            safeCall("Season update", loadLogo)
+        end
+
+        task.wait(60)
+    end
+end)
+
 
 --------------------------------------------------------------------------------------------------------------------
 
