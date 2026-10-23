@@ -558,6 +558,22 @@ pcall(function()
 	end
 end)
 
+local HttpService
+local httpServiceSuccess = false
+local jsonDecodeSuccess = false
+
+pcall(function()
+	HttpService = game:GetService("HttpService")
+	httpServiceSuccess = HttpService ~= nil
+end)
+
+pcall(function()
+	if HttpService and typeof(HttpService.JSONDecode) == "function" then
+		local result = HttpService:JSONDecode('{"success":true}')
+		jsonDecodeSuccess = result ~= nil and result.success == true
+	end
+end)
+
 local requestFunc
 local httpSuccess = false
 
@@ -583,64 +599,87 @@ local translations = {
 	fr = {
 		getgenv = "La fonction getgenv est introuvable ! ⚠️",
 		http = "Aucune fonction HTTP supportée trouvée ! ⚠️",
-		request = "Aucune fonction request supportée trouvée ! ⚠️"
+		request = "Aucune fonction request supportée trouvée ! ⚠️",
+		httpService = "Le service HttpService est introuvable ! ⚠️",
+		jsonDecode = "La fonction JSONDecode est indisponible ! ⚠️"
 	},
 	en = {
 		getgenv = "getgenv function not found! ⚠️",
 		http = "No supported HTTP request function found! ⚠️",
-		request = "No supported request function found! ⚠️"
+		request = "No supported request function found! ⚠️",
+		httpService = "HttpService service not found! ⚠️",
+		jsonDecode = "JSONDecode function unavailable! ⚠️"
 	},
 	es = {
 		getgenv = "¡Función getgenv no encontrada! ⚠️",
 		http = "¡No se encontró ninguna función HTTP compatible! ⚠️",
-		request = "¡No se encontró ninguna función request compatible! ⚠️"
+		request = "¡No se encontró ninguna función request compatible! ⚠️",
+		httpService = "¡No se encontró el servicio HttpService! ⚠️",
+		jsonDecode = "¡La función JSONDecode no está disponible! ⚠️"
 	},
 	pt = {
 		getgenv = "Função getgenv não encontrada! ⚠️",
 		http = "Nenhuma função HTTP suportada encontrada! ⚠️",
-		request = "Nenhuma função request suportada encontrada! ⚠️"
+		request = "Nenhuma função request suportada encontrada! ⚠️",
+		httpService = "Serviço HttpService não encontrado! ⚠️",
+		jsonDecode = "Função JSONDecode indisponível! ⚠️"
 	},
 	tr = {
 		getgenv = "getgenv işlevi bulunamadı! ⚠️",
 		http = "Desteklenen HTTP isteği işlevi bulunamadı! ⚠️",
-		request = "Desteklenen request işlevi bulunamadı! ⚠️"
+		request = "Desteklenen request işlevi bulunamadı! ⚠️",
+		httpService = "HttpService servisi bulunamadı! ⚠️",
+		jsonDecode = "JSONDecode işlevi kullanılamıyor! ⚠️"
 	},
 	it = {
 		getgenv = "Funzione getgenv non trovata! ⚠️",
 		http = "Nessuna funzione HTTP supportata trovata! ⚠️",
-		request = "Nessuna funzione request supportata trovata! ⚠️"
+		request = "Nessuna funzione request supportata trovata! ⚠️",
+		httpService = "Servizio HttpService non trovato! ⚠️",
+		jsonDecode = "Funzione JSONDecode non disponibile! ⚠️"
 	},
 	de = {
 		getgenv = "getgenv-Funktion nicht gefunden! ⚠️",
 		http = "Keine unterstützte HTTP-Anfragefunktion gefunden! ⚠️",
-		request = "Keine unterstützte request-Funktion gefunden! ⚠️"
+		request = "Keine unterstützte request-Funktion gefunden! ⚠️",
+		httpService = "HttpService-Dienst nicht gefunden! ⚠️",
+		jsonDecode = "JSONDecode-Funktion nicht verfügbar! ⚠️"
 	},
 	ar = {
 		getgenv = "لم يتم العثور على دالة getgenv! ⚠️",
 		http = "لم يتم العثور على أي دالة HTTP مدعومة! ⚠️",
-		request = "لم يتم العثور على أي دالة request مدعومة! ⚠️"
+		request = "لم يتم العثور على أي دالة request مدعومة! ⚠️",
+		httpService = "لم يتم العثور على خدمة HttpService! ⚠️",
+		jsonDecode = "دالة JSONDecode غير متاحة! ⚠️"
 	},
 	ja = {
 		getgenv = "getgenv 関数が見つかりません！⚠️",
 		http = "サポートされているHTTPリクエスト機能が見つかりません！⚠️",
-		request = "サポートされているrequest関数が見つかりません！⚠️"
+		request = "サポートされているrequest関数が見つかりません！⚠️",
+		httpService = "HttpService が見つかりません！⚠️",
+		jsonDecode = "JSONDecode 関数が利用できません！⚠️"
 	},
 	ru = {
 		getgenv = "Функция getgenv не найдена! ⚠️",
 		http = "Поддерживаемая функция HTTP-запроса не найдена! ⚠️",
-		request = "Поддерживаемая функция request не найдена! ⚠️"
+		request = "Поддерживаемая функция request не найдена! ⚠️",
+		httpService = "Служба HttpService не найдена! ⚠️",
+		jsonDecode = "Функция JSONDecode недоступна! ⚠️"
 	},
 	zh = {
 		getgenv = "未找到 getgenv 函数！⚠️",
 		http = "未找到受支持的HTTP请求函数！⚠️",
-		request = "未找到受支持的request函数！⚠️"
+		request = "未找到受支持的request函数！⚠️",
+		httpService = "未找到 HttpService 服务！⚠️",
+		jsonDecode = "JSONDecode 函数不可用！⚠️"
 	}
 }
 
 local function getTranslatedMessage(key)
 	local langCode = (LocalizationService.RobloxLocaleId or "en"):sub(1, 2)
 	local language = translations[langCode] or translations.en
-	return language[key] or language.en
+
+	return language[key] or translations.en[key] or key
 end
 
 local NotificationLib = {
@@ -769,9 +808,31 @@ if not httpSuccess then
 	})
 end
 
+if not httpServiceSuccess then
+	warn("[HTTPSERVICE WARNING] HttpService not found")
+
+	NotificationLib:Notify({
+		Title = "HTTPSERVICE WARNING",
+		Message = getTranslatedMessage("httpService"),
+		Duration = 5
+	})
+end
+
+if not jsonDecodeSuccess then
+	warn("[JSONDECODE WARNING] JSONDecode unavailable")
+
+	NotificationLib:Notify({
+		Title = "JSONDECODE WARNING",
+		Message = getTranslatedMessage("jsonDecode"),
+		Duration = 5
+	})
+end
+
 _G.MISSING_GETGENV = not hasGetGenv
 _G.MISSING_HTTP = not httpSuccess
 _G.MISSING_REQUEST = not httpSuccess
+_G.MISSING_HTTPSERVICE = not httpServiceSuccess
+_G.MISSING_JSONDECODE = not jsonDecodeSuccess
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -1672,7 +1733,7 @@ versionLabel = Instance.new("TextLabel", mainFrame)
 versionLabel.Size = UDim2.new(0, 150, 0, 25)
 versionLabel.Position = UDim2.new(0, 10, 0, 8)
 versionLabel.BackgroundTransparency = 1
-versionLabel.Text = "v8.1"
+versionLabel.Text = "v8.2"
 versionLabel.Font = Enum.Font.Ubuntu
 versionLabel.TextSize = 16
 versionLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -2880,7 +2941,7 @@ Modules.print = function(color, text, size)
 	print(Text)
 end
 
-local version = "8.1"
+local version = "8.2"
 
 local translations = {
 	["fr"] = {
