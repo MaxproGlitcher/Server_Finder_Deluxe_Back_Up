@@ -56,15 +56,19 @@ The main goal of **Server Finder Deluxe Back Up** has always been to provide a f
 
 Server Finder Deluxe Back Up is designed to support different environments, including:
 
-* PC Exploits
-* Android
-* iOS
-* Mac
+- PC Exploits
+- Android
+- iOS
+- Mac
 
-The script requires an environment with **HTTP functions** and **getgenv support**.
-Server Finder Deluxe Back Up does **not require 100UNC** to run.
+The script requires an environment that supports the following functions:
 
-# Server Finder Deluxe Back Up
+- **HTTP Request Function** (`request`)
+- **HttpService** support
+- **JSONDecode** support
+- **getgenv** support
+
+Server Finder Deluxe Back Up does **not require 100UNC** to run. However, the required functions listed above must be available in your execution environment for the script to work correctly.
 
 Server Finder Deluxe Back Up uses advanced server-search engineering designed to efficiently discover and analyze Roblox public servers.
 
