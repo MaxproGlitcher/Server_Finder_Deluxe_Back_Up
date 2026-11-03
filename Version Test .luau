@@ -1733,7 +1733,7 @@ versionLabel = Instance.new("TextLabel", mainFrame)
 versionLabel.Size = UDim2.new(0, 150, 0, 25)
 versionLabel.Position = UDim2.new(0, 10, 0, 8)
 versionLabel.BackgroundTransparency = 1
-versionLabel.Text = "v8.1"
+versionLabel.Text = "v8.2"
 versionLabel.Font = Enum.Font.Ubuntu
 versionLabel.TextSize = 16
 versionLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
@@ -1763,7 +1763,16 @@ bestLatencyBtn.ZIndex = 35
 bestCorner = Instance.new("UICorner")
 bestCorner.Parent = bestLatencyBtn
 
+local clickSound = Instance.new("Sound", bestLatencyBtn)
+clickSound.SoundId = "rbxassetid://9120093264"
+clickSound.Volume = 1
+clickSound.PlayOnRemove = false
+
 bestLatencyBtn.MouseButton1Click:Connect(function()
+	local soundOk, soundErr = pcall(function()
+		clickSound:Play()
+	end)
+
 	local ok, err = pcall(function()
 		refreshServers("BestLatency")
 	end)
@@ -2941,7 +2950,7 @@ Modules.print = function(color, text, size)
 	print(Text)
 end
 
-local version = "8.1"
+local version = "8.2"
 
 local translations = {
 	["fr"] = {
