@@ -1862,6 +1862,8 @@ print(GetTotalPlayers(game.PlaceId))
 
 local posChange = 8
 local serverFrames = {}
+local cachedTotalPlayers = "Loading..."
+
 
 -- ════════════════════════════════════════════════════
 --   (Récupération des Serveurs (API v1) / BestLacency)
