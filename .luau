@@ -1763,7 +1763,16 @@ bestLatencyBtn.ZIndex = 35
 bestCorner = Instance.new("UICorner")
 bestCorner.Parent = bestLatencyBtn
 
+local clickSound = Instance.new("Sound", bestLatencyBtn)
+clickSound.SoundId = "rbxassetid://9120093264"
+clickSound.Volume = 1
+clickSound.PlayOnRemove = false
+
 bestLatencyBtn.MouseButton1Click:Connect(function()
+	local soundOk, soundErr = pcall(function()
+		clickSound:Play()
+	end)
+
 	local ok, err = pcall(function()
 		refreshServers("BestLatency")
 	end)
