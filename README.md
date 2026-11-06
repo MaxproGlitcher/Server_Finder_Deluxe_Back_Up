@@ -14,7 +14,8 @@
 loadstring(game:HttpGet("https://raw.githubusercontent.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/refs/heads/main/.luau"))()
 ```
 
-![image atl](https://github.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/blob/ffc046878153d1f5c079e4480daa44206be6182c/Server%20Finder%20Deluxe%20Logo%20Back%20Up.png)
+![image atl](https://github.com/MaxproGlitcher/Server_Finder_Deluxe_Back_Up/blob/fb090a326d0fe785b4c9d712ac8da307533d1da7/Server%20Finder%20Deluxe%20LOGO%20.jpg)
+
 
 # Server Finder Deluxe Back Up
 
